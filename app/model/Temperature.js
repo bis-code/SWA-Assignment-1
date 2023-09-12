@@ -2,16 +2,21 @@ import {createWheaterData} from "./WheaterData"
 import {createEvent} from "./Event"
 
 function createTemperature(temp, time, place){
-    let temperature = Object.create(createWheaterData(temp, 'Temperature', '°C', time, place));
+    let weatherData = createWheaterData(temp, 'Temperature', '°C', time, place);
 
-    temperature.convertToF = function () {
+    let temperature = Object.assign({}, weatherData);
+    
+    temperature.convertToF = () => {
+        if(temperature.getUnit() !== 'F') {
+            temperature.setValue((temperature.getValue() * 9/5) + 32);
+        }
+    }
 
-        temperature = FA
-    };
-
-    temperature.convertToC = function () {
-        return this.getValue();
-    };
+    temperature.convertToC = () => {
+        if(temperature.getUnit() !== 'C') {
+            temperature.setValue((temperature.getValue() - 32) * 5/9);
+        }
+    }
 
     return temperature;
 }
