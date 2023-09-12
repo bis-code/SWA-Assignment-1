@@ -1,14 +1,16 @@
-function createTemperature(temp){
-    let temperature = {
-        temp,
+import {createWheaterData} from "./WheaterData"
+import {createEvent} from "./Event"
 
-        convertToF(){
-            return(this.temp * 9/5) + 32;
-        },
+function createTemperature(temp, time, place){
+    let temperature = Object.create(createWheaterData(temp, 'Temperature', '°C', time, place));
 
-        convertToC(){
-            return this.temp;
-        },
+    temperature.convertToF = function () {
+
+        temperature = FA
+    };
+
+    temperature.convertToC = function () {
+        return this.getValue();
     };
 
     return temperature;
