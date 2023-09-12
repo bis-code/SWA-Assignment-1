@@ -18,3 +18,7 @@ function createWind(speedInMS, direction) {
 
     return wind;
 }
+
+module.exports = {
+    createWind,
+}
