@@ -2,7 +2,7 @@ import {createWheaterData} from "./WheaterData"
 import {CELSIUS_TYPE, CELSIUS_UNIT, FAHRENHEIT_UNIT, FAHRENHEIT_TYPE} from "./Constants"
 
 function createTemperature(temp, time, place){
-    let weatherData = createWheaterData(temp, 'Temperature', '°C', time, place);
+    let weatherData = createWheaterData(temp, 'Temperature', 'C', time, place);
 
     let temperature = Object.assign({}, weatherData);
     
