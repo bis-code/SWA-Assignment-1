@@ -11,6 +11,14 @@ function createEvent(time, place){
         getPlace(){
             return this.place;
         },
+
+        setTime(_time){
+            this.time = _time;
+        },
+
+        setPlace(_place){
+            this.place = _place;
+        },
     };
 
     return event;
