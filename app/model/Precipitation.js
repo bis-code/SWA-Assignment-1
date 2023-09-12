@@ -19,3 +19,7 @@ function createPrecipitation(precipitationInMM, type) {
     return precipitation;
 
 }
+
+module.exports = {
+    createPrecipitation,
+}
