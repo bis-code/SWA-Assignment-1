@@ -1,7 +1,7 @@
 import {createWheaterData} from "./WheaterData";
 import {createEvent} from "./Event";
 
-function weatherPrediction(time, place, value, type, unit) {
+function createWeatherPrediction(time, place, value, type, unit) {
     let weatherData = createWheaterData(value, type, unit);
     let event = createEvent(time, place);
 
@@ -22,5 +22,5 @@ function weatherPrediction(time, place, value, type, unit) {
 }
 
 module.exports = {
-    weatherPrediction,
+    createWeatherPrediction
 }
