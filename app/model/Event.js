@@ -15,3 +15,7 @@ function createEvent(time, place){
 
     return event;
 }
+
+module.exports = {
+    createEvent,
+}

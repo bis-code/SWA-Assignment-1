@@ -13,3 +13,7 @@ function createTemperature(temp){
 
     return temperature;
 }
+
+module.exports = {
+    createTemperature,
+}

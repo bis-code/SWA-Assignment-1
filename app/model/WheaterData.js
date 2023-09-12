@@ -20,3 +20,7 @@ function createWheaterData(value, type, unit){
 
     return wheaterData;
 }
+
+module.exports = {
+    createWheaterData
+}
