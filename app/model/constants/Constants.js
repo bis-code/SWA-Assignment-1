@@ -12,6 +12,13 @@ const CELSIUS_TYPE = 'Celsius';
 const CELSIUS_UNIT = 'C';
 const DIRECTION = ['North', 'West', 'South', 'East'];
 
+const Types = {
+    TEMPERATURE : 'temperature',
+    PRECIPITATION : 'precipitation',
+    WIND_SPEED : 'wind speed',
+    CLOUD_COVERAGE : 'cloud coverage',
+}
+
 module.exports = {
     MM_UNIT,
     MM_TYPE,
