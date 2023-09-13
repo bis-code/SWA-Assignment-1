@@ -28,3 +28,7 @@ function createPrecipitationPrediction(value, type, unit, time, place) {
         }
     }
 }
+
+module.exports = {
+    createPrecipitationPrediction
+}
