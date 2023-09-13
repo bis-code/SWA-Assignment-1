@@ -1,5 +1,5 @@
 import {createWheaterData} from "./WheaterData"
-import {MPH_TYPE, MPH_UNIT, MPS_TYPE, DIRECTION} from "./constants/Constants"
+import {MPH_UNIT, MPS_UNIT, DIRECTION} from "./constants/Constants"
 
 function createWind(value, type, unit, time, place, direction) {
 
@@ -18,19 +18,17 @@ function createWind(value, type, unit, time, place, direction) {
     }
 
     wind.convertToMPH = () => {
-        if (wind.getType() !== MPH_TYPE) {
+        if (wind.getUnit() !== MPH_UNIT) {
             wind.setValue(wind.getValue() * 2.237);
-            wind.setType(MPH_TYPE);
             wind.setUnit(MPH_UNIT);
             wind.setDirection(DIRECTION);
         }
     }
 
     wind.convertToMPS = () => {
-        if (wind.getType() !== MPS_TYPE) {
+        if (wind.getUnit() !== MPS_UNIT) {
             wind.setValue(wind.getValue() / 2.237);
-            wind.setType(MPS_TYPE);
-            wind.setUnit(MPH_UNIT);
+            wind.setUnit(MPS_UNIT);
             wind.setDirection(DIRECTION);
         }
     }
