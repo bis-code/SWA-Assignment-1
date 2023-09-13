@@ -1,43 +1,43 @@
-const {createWheaterData} = require("./WheaterData");
+const {createWheaterData, WeatherData} = require("./WheaterData");
 const {MPH_TYPE, MPH_UNIT, MPS_TYPE, DIRECTION} = require("./constants/Constants");
 
 function createWind(value, type, unit, time, place, direction) {
 
-    let weatherData = createWheaterData(value, type, unit, time, place);
+    let weatherData = new WeatherData(value, type, unit, time, place);
 
-    let wind = Object.assign({}, weatherData);
-
-    wind.direction = direction;
-
-    wind.getDirection = function () {
-        return this.direction;
+    const getDirection = function () {
+        return direction;
     }
 
-    wind.setDirection = function (_direction) {
-        this.direction = _direction;
+    const setDirection = function (_direction) {
+        direction = _direction;
     }
 
-    wind.convertToMPH = () => {
-        if (wind.getType() !== MPH_TYPE) {
-            wind.setValue(wind.getValue() * 2.237);
-            wind.setType(MPH_TYPE);
-            wind.setUnit(MPH_UNIT);
-            wind.setDirection(DIRECTION);
+    const convertToMPH = () => {
+        if (weatherData.getType() !== MPH_TYPE) {
+            weatherData.setValue(weatherData.getValue() * 2.237);
+            weatherData.setType(MPH_TYPE);
+            weatherData.setUnit(MPH_UNIT);
         }
     }
 
-    wind.convertToMPS = () => {
-        if (wind.getType() !== MPS_TYPE) {
-            wind.setValue(wind.getValue() / 2.237);
-            wind.setType(MPS_TYPE);
-            wind.setUnit(MPH_UNIT);
-            wind.setDirection(DIRECTION);
+    const convertToMPS = () => {
+        if (weatherData.getType() !== MPS_TYPE) {
+            weatherData.setValue(weatherData.getValue() / 2.237);
+            weatherData.setType(MPS_TYPE);
+            weatherData.setUnit(MPH_UNIT);
         }
     }
 
-    return wind;
+    return {
+        ...weatherData,
+        convertToMPH,
+        convertToMPS,
+        getDirection,
+        setDirection
+    }
 }
 
 module.exports = {
-    createWind,
+    Wind : createWind,
 }

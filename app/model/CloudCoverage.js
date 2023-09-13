@@ -1,13 +1,13 @@
-const {createWheaterData} = require("./WheaterData");
+const {createWheaterData, WeatherData} = require("./WheaterData");
 
 function createCloudCoverage(value, type, unit, time, place) {
-    let wheaterData = createWheaterData(value, type, unit, time, place);
+    let weatherData = new WeatherData(value, type, unit, time, place);
 
-    let cloudCoverage = Object.assign({}, wheaterData);
-
-    return cloudCoverage;
+    return {
+        ...weatherData
+    };
 }
 
 module.exports = {
-    createCloudCoverage
+    CloudCoverage : createCloudCoverage
 }

@@ -1,32 +1,35 @@
-const {createWheaterData} = require("./WheaterData");
+const {WeatherData} = require("./WheaterData");
 const {INCH_UNIT, INCH_TYPE, MM_TYPE, MM_UNIT} = require("./constants/Constants");
 
-function createPrecipitation(value, type, unit, time, place, precipitation_type) {
+function Precipitation(value, type, unit, time, place, precipitation_type) {
 
-    let weatherData = createWheaterData(value, type, unit, time, place);
-    let precipitation = Object.assign({}, weatherData);
+    let weatherData = new WeatherData(value, type, unit, time, place);
 
-    precipitation.precipitation_type = precipitation_type;
+    const getPrecipitationType = () => precipitation_type;
 
-    precipitation.convertToInches = () => {
-        if (precipitation.getType() !== INCH_TYPE) {
-            precipitation.setValue(precipitation.getValue() / 25.4);
-            precipitation.setUnit(INCH_UNIT);
+    const convertToInches = () => {
+        if (weatherData.getType() !== INCH_TYPE) {
+            weatherData.setValue(weatherData.getValue() / 25.4);
+            weatherData.setUnit(INCH_UNIT);
         }
     }
 
-    precipitation.convertToMM = () => {
-        if (precipitation.getType() !== MM_TYPE) {
-            precipitation.setValue(precipitation.getValue() * 25.4);
-            precipitation.setType(MM_TYPE);
-            precipitation.setUnit(MM_UNIT);
+    const convertToMM = () => {
+        if (weatherData.getType() !== MM_TYPE) {
+            weatherData.setValue(weatherData.getValue() * 25.4);
+            weatherData.setType(MM_TYPE);
+            weatherData.setUnit(MM_UNIT);
         }
     }
 
-    return precipitation;
-
+    return {
+        ...weatherData,
+        getPrecipitationType,
+        convertToMM,
+        convertToInches
+    }
 }
 
 module.exports = {
-    createPrecipitation,
+    Precipitation,
 }
