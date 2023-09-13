@@ -1,22 +1,22 @@
-function createEvent(time, place){
+function createEvent(time, place) {
 
     let event = {
         time,
         place,
 
-        getTime(){
+        getTime() {
             return this.time;
         },
 
-        getPlace(){
+        getPlace() {
             return this.place;
         },
 
-        setTime(_time){
+        setTime(_time) {
             this.time = _time;
         },
 
-        setPlace(_place){
+        setPlace(_place) {
             this.place = _place;
         },
     };

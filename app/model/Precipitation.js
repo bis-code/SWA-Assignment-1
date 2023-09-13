@@ -1,20 +1,25 @@
 import {createWheaterData} from "./WheaterData"
-import {INCH_UNIT, INCH_TYPE, MM_TYPE, MM_UNIT} from "./Constants"
-function createPrecipitation(type, unit, time, place) {
+import {INCH_UNIT, INCH_TYPE, MM_TYPE, MM_UNIT} from "./constants/Constants"
 
-    let weatherData = createWheaterData(type, 'Precipitation', 'MM', time, place);
+function createPrecipitation(value, type, unit, time, place) {
+
+    let weatherData = createWheaterData(value, type, unit, time, place);
     let precipitation = Object.assign({}, weatherData);
 
     precipitation.convertToInches = () => {
-        precipitation.setValue(precipitation.getValue()/25.4);
-        precipitation.setType(INCH_TYPE);
-        precipitation.setUnit(INCH_UNIT);
+        if (precipitation.getType() !== INCH_TYPE) {
+            precipitation.setValue(precipitation.getValue() / 25.4);
+            precipitation.setType(INCH_TYPE);
+            precipitation.setUnit(INCH_UNIT);
+        }
     }
 
     precipitation.convertToMM = () => {
-        precipitation.setValue(precipitation.getValue()*25.4);
-        precipitation.setType(MM_TYPE);
-        precipitation.setUnit(MM_UNIT);
+        if (precipitation.getType() !== MM_TYPE) {
+            precipitation.setValue(precipitation.getValue() * 25.4);
+            precipitation.setType(MM_TYPE);
+            precipitation.setUnit(MM_UNIT);
+        }
     }
 
     return precipitation;

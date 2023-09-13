@@ -1,6 +1,6 @@
 import {createEvent} from "./Event"
 
-function createWheaterData(value, type, unit, time, place){
+function createWheaterData(value, type, unit, time, place) {
 
     let weatherData = Object.create(createEvent(time, place));
 
@@ -20,15 +20,15 @@ function createWheaterData(value, type, unit, time, place){
         return this.unit;
     };
 
-    weatherData.setValue = function (_value){
+    weatherData.setValue = function (_value) {
         this.value = _value;
     }
 
-    weatherData.setType = function (_type){
+    weatherData.setType = function (_type) {
         this.type = _type;
     }
 
-    weatherData.setUnit = function (_unit){
+    weatherData.setUnit = function (_unit) {
         this.unit = _unit;
     }
 
