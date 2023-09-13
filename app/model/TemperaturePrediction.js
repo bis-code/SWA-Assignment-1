@@ -2,7 +2,7 @@ import {createWeatherPrediction} from "./WeatherPrediction";
 import {CELSIUS_TYPE, CELSIUS_UNIT, FAHRENHEIT_TYPE, FAHRENHEIT_UNIT} from "./constants/Constants";
 
 function createTemperaturePrediction(value, type, unit, time, place) {
-    let weatherPrediction = createWeatherPrediction(time, place, value, type, unit);
+    let weatherPrediction = createWeatherPrediction(value, type, unit, time, place);
 
     let temperaturePrediction = Object.assign({}, weatherPrediction);
 

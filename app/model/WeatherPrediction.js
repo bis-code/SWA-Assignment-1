@@ -1,7 +1,7 @@
 import {createWheaterData} from "./WheaterData";
 import {createEvent} from "./Event";
 
-function createWeatherPrediction(time, place, value, type, unit) {
+function createWeatherPrediction(value, type, unit, time, place) {
     let weatherData = createWheaterData(value, type, unit);
     let event = createEvent(time, place);
 
