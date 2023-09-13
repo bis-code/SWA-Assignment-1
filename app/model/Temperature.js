@@ -1,5 +1,5 @@
-import {createWheaterData} from "./WheaterData"
-import {CELSIUS_TYPE, CELSIUS_UNIT, FAHRENHEIT_UNIT, FAHRENHEIT_TYPE} from "./constants/Constants"
+const {createWheaterData} = require("./WheaterData");
+const {CELSIUS_TYPE, CELSIUS_UNIT, FAHRENHEIT_UNIT, FAHRENHEIT_TYPE} = require("./constants/Constants");
 
 function createTemperature(value, type, unit, time, place) {
     let weatherData = createWheaterData(value, type, unit, time, place);

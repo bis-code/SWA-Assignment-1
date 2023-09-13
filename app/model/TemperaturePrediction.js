@@ -1,5 +1,5 @@
-import {createWeatherPrediction} from "./WeatherPrediction";
-import {CELSIUS_TYPE, CELSIUS_UNIT, FAHRENHEIT_TYPE, FAHRENHEIT_UNIT} from "./constants/Constants";
+const {createWeatherPrediction} = require("./WeatherPrediction");
+const {CELSIUS_TYPE, CELSIUS_UNIT, FAHRENHEIT_TYPE, FAHRENHEIT_UNIT} = require("./constants/Constants");
 
 function createTemperaturePrediction(value, type, unit, time, place) {
     let weatherPrediction = createWeatherPrediction(value, type, unit, time, place);

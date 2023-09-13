@@ -1,4 +1,4 @@
-import {createWheaterData} from "./WheaterData"
+const {createWheaterData} = require("./WheaterData");
 
 function createCloudCoverage(value, type, unit, time, place) {
     let wheaterData = createWheaterData(value, type, unit, time, place);

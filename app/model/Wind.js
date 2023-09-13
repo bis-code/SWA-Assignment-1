@@ -1,5 +1,5 @@
-import {createWheaterData} from "./WheaterData"
-import {MPH_TYPE, MPH_UNIT, MPS_TYPE, DIRECTION} from "./constants/Constants"
+const {createWheaterData} = require("./WheaterData");
+const {MPH_TYPE, MPH_UNIT, MPS_TYPE, DIRECTION} = require("./constants/Constants");
 
 function createWind(value, type, unit, time, place, direction) {
 

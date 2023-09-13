@@ -1,15 +1,16 @@
-import {createWheaterData} from "./WheaterData"
-import {INCH_UNIT, INCH_TYPE, MM_TYPE, MM_UNIT} from "./constants/Constants"
+const {createWheaterData} = require("./WheaterData");
+const {INCH_UNIT, INCH_TYPE, MM_TYPE, MM_UNIT} = require("./constants/Constants");
 
-function createPrecipitation(value, type, unit, time, place) {
+function createPrecipitation(value, type, unit, time, place, precipitation_type) {
 
     let weatherData = createWheaterData(value, type, unit, time, place);
     let precipitation = Object.assign({}, weatherData);
 
+    precipitation.precipitation_type = precipitation_type;
+
     precipitation.convertToInches = () => {
         if (precipitation.getType() !== INCH_TYPE) {
             precipitation.setValue(precipitation.getValue() / 25.4);
-            precipitation.setType(INCH_TYPE);
             precipitation.setUnit(INCH_UNIT);
         }
     }

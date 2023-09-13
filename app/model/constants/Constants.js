@@ -33,4 +33,5 @@ module.exports = {
     CELSIUS_TYPE,
     CELSIUS_UNIT,
     DIRECTION,
+    Types
 };

@@ -1,4 +1,4 @@
-import {createEvent} from "./Event"
+const {createEvent} = require("./Event");
 
 function createWheaterData(value, type, unit, time, place) {
 
