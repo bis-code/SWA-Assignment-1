@@ -1,41 +1,44 @@
-import {createEvent} from "./Event"
+const {Event} = require("./Event");
 
 function createWheaterData(value, type, unit, time, place) {
+    let event = new Event(time, place);
 
-    let weatherData = Object.create(createEvent(time, place));
-
-    weatherData.value = value;
-    weatherData.type = type;
-    weatherData.unit = unit;
-
-    weatherData.getValue = function () {
-        return this.value;
+    const getValue = function () {
+        return value;
     };
 
-    weatherData.getType = function () {
-        return this.type;
+    const getType = function () {
+        return type;
     };
 
-    weatherData.getUnit = function () {
-        return this.unit;
+    const getUnit = function () {
+        return unit;
     };
 
-    weatherData.setValue = function (_value) {
-        this.value = _value;
+    const setValue = function (_value) {
+        value = _value;
     }
 
-    weatherData.setType = function (_type) {
-        this.type = _type;
+    const setType = function (_type) {
+        type = _type;
     }
 
-    weatherData.setUnit = function (_unit) {
-        this.unit = _unit;
+    const setUnit = function (_unit) {
+        unit = _unit;
     }
 
-    return weatherData;
+    return {
+        ...event,
+        getValue,
+        setValue,
+        getType,
+        setType,
+        getUnit,
+        setUnit
+    };
 
 }
 
 module.exports = {
-    createWheaterData
+    WeatherData : createWheaterData,
 }

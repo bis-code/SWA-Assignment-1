@@ -1,29 +1,28 @@
-function createEvent(time, place) {
-
-    let event = {
-        time,
-        place,
-
-        getTime() {
-            return this.time;
-        },
-
-        getPlace() {
-            return this.place;
-        },
-
-        setTime(_time) {
-            this.time = _time;
-        },
-
-        setPlace(_place) {
-            this.place = _place;
-        },
+function Event(time, place) {
+    const getTime = () => {
+        return time;
     };
 
-    return event;
+    const getPlace = () => {
+        return place;
+    };
+
+    const setTime = (_time) => {
+        time = _time;
+    };
+
+    const setPlace = (_place) => {
+        place = _place;
+    };
+
+    return {
+        getTime,
+        setTime,
+        getPlace,
+        setPlace
+    }
 }
 
 module.exports = {
-    createEvent,
+    Event
 }

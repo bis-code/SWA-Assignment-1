@@ -1,5 +1,5 @@
-import {createWeatherPrediction} from "./WeatherPrediction";
-import {DIRECTION, MPH_TYPE, MPH_UNIT, MPS_TYPE} from "./constants/Constants";
+const {createWeatherPrediction} = require("./WeatherPrediction");
+const {DIRECTION, MPH_TYPE, MPH_UNIT, MPS_TYPE} = require("./constants/Constants");
 
 function createWindPrediction(value, type, unit, time, place, direction) {
     let weatherPrediction = createWeatherPrediction(value, type, unit, time, place);

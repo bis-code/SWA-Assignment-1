@@ -1,28 +1,30 @@
-import {createWheaterData} from "./WheaterData"
-import {CELSIUS_UNIT, FAHRENHEIT_UNIT} from "./constants/Constants"
+const {WeatherData} = require("./WheaterData");
+const {CELSIUS_TYPE, CELSIUS_UNIT, FAHRENHEIT_UNIT, FAHRENHEIT_TYPE} = require("./constants/Constants");
 
 function createTemperature(value, type, unit, time, place) {
-    let weatherData = createWheaterData(value, type, unit, time, place);
+    let weatherData = new WeatherData(value, type, unit, time, place);
 
-    let temperature = Object.assign({}, weatherData);
-
-    temperature.convertToF = () => {
-        if (temperature.getUnit() !== FAHRENHEIT_UNIT) {
-            temperature.setValue((temperature.getValue() * 9 / 5) + 32);
-            temperature.setUnit(FAHRENHEIT_UNIT);
+    const convertToF = () => {
+        if (weatherData.getUnit() !== FAHRENHEIT_UNIT) {
+            weatherData.setValue((weatherData.getValue() * 9 / 5) + 32);
+            weatherData.setUnit(FAHRENHEIT_UNIT);
         }
     }
 
-    temperature.convertToC = () => {
-        if (temperature.getUnit() !== CELSIUS_UNIT) {
-            temperature.setValue((temperature.getValue() - 32) * 5 / 9);
-            temperature.setUnit(CELSIUS_UNIT);
+    const convertToC = () => {
+        if (weatherData.getUnit() !== CELSIUS_UNIT) {
+            weatherData.setValue((weatherData.getValue() - 32) * 5 / 9);
+            weatherData.setUnit(CELSIUS_UNIT);
         }
     }
 
-    return temperature;
+    return {
+        ...weatherData,
+        convertToF,
+        convertToC,
+    }
 }
 
 module.exports = {
-    createTemperature,
+    Temperature : createTemperature,
 }
