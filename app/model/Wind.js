@@ -1,9 +1,9 @@
 import {createWheaterData} from "./WheaterData"
-import {MPH_TYPE, MPH_UNIT, MPS_TYPE, DIRECTION} from "./Constants"
+import {MPH_TYPE, MPH_UNIT, MPS_TYPE, DIRECTION} from "./constants/Constants"
 
-function createWind(unit, direction, type, time, place) {
+function createWind(value, type, unit, time, place, direction) {
 
-    let weatherData = createWheaterData(type, 'Wind', 'MPS', time, place);
+    let weatherData = createWheaterData(value, type, unit, time, place);
 
     let wind = Object.assign({}, weatherData);
 
