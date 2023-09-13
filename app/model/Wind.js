@@ -13,22 +13,26 @@ function createWind(value, type, unit, time, place, direction) {
         return this.direction;
     }
 
-    wind.setDirection = function (_direction){
+    wind.setDirection = function (_direction) {
         this.direction = _direction;
     }
 
     wind.convertToMPH = () => {
-        wind.setValue(wind.getValue()*2.237);
-        wind.setType(MPH_TYPE);
-        wind.setUnit(MPH_UNIT);
-        wind.setDirection(DIRECTION);
+        if (wind.getType() !== MPH_TYPE) {
+            wind.setValue(wind.getValue() * 2.237);
+            wind.setType(MPH_TYPE);
+            wind.setUnit(MPH_UNIT);
+            wind.setDirection(DIRECTION);
+        }
     }
 
     wind.convertToMPS = () => {
-        wind.setValue(wind.getValue()/2.237);
-        wind.setType(MPS_TYPE);
-        wind.setUnit(MPH_UNIT);
-        wind.setDirection(DIRECTION);
+        if (wind.getType() !== MPS_TYPE) {
+            wind.setValue(wind.getValue() / 2.237);
+            wind.setType(MPS_TYPE);
+            wind.setUnit(MPH_UNIT);
+            wind.setDirection(DIRECTION);
+        }
     }
 
     return wind;
