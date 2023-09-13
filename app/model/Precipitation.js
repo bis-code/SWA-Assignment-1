@@ -8,16 +8,15 @@ function Precipitation(value, type, unit, time, place, precipitation_type) {
     const getPrecipitationType = () => precipitation_type;
 
     const convertToInches = () => {
-        if (weatherData.getType() !== INCH_TYPE) {
+        if (weatherData.getUnit() !== INCH_UNIT) {
             weatherData.setValue(weatherData.getValue() / 25.4);
             weatherData.setUnit(INCH_UNIT);
         }
     }
 
     const convertToMM = () => {
-        if (weatherData.getType() !== MM_TYPE) {
+        if (weatherData.getUnit() !== MM_UNIT) {
             weatherData.setValue(weatherData.getValue() * 25.4);
-            weatherData.setType(MM_TYPE);
             weatherData.setUnit(MM_UNIT);
         }
     }

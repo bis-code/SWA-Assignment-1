@@ -14,18 +14,18 @@ function createWind(value, type, unit, time, place, direction) {
     }
 
     const convertToMPH = () => {
-        if (weatherData.getType() !== MPH_TYPE) {
-            weatherData.setValue(weatherData.getValue() * 2.237);
-            weatherData.setType(MPH_TYPE);
-            weatherData.setUnit(MPH_UNIT);
+        if (wind.getUnit() !== MPH_UNIT) {
+            wind.setValue(wind.getValue() * 2.237);
+            wind.setUnit(MPH_UNIT);
+            wind.setDirection(DIRECTION);
         }
     }
 
     const convertToMPS = () => {
-        if (weatherData.getType() !== MPS_TYPE) {
-            weatherData.setValue(weatherData.getValue() / 2.237);
-            weatherData.setType(MPS_TYPE);
-            weatherData.setUnit(MPH_UNIT);
+        if (wind.getUnit() !== MPS_UNIT) {
+            wind.setValue(wind.getValue() / 2.237);
+            wind.setUnit(MPS_UNIT);
+            wind.setDirection(DIRECTION);
         }
     }
 
