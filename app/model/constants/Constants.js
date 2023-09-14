@@ -14,6 +14,13 @@ const Types = {
     CLOUD_COVERAGE : 'cloud coverage',
 }
 
+const PrecipitationTypes = {
+    HAIL : 'hail',
+    SNOW : 'snow',
+    RAIN : 'rain',
+    SLEET : 'sleet',
+}
+
 module.exports = {
     MM_UNIT,
     INCH_UNIT,
@@ -23,5 +30,6 @@ module.exports = {
     CELSIUS_TYPE,
     CELSIUS_UNIT,
     DIRECTION,
-    Types
+    Types,
+    PrecipitationTypes
 };
