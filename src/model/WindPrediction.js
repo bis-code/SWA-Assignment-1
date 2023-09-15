@@ -1,7 +1,7 @@
 import {WeatherPrediction} from "./WeatherPrediction.js";
 
-export function WindPrediction(value, type, unit, time, place, direction) {
-    let weatherPrediction = new WeatherPrediction(value, type, unit, time, place);
+export function WindPrediction(from, to, type, unit, time, place, direction) {
+    let weatherPrediction = new WeatherPrediction(from, to, type, unit, time, place);
 
     const getExpectedDirections = () => direction;
 
@@ -9,14 +9,16 @@ export function WindPrediction(value, type, unit, time, place, direction) {
 
     const convertToMPH = () => {
         if (weatherPrediction.getUnit() !== 'm/h') {
-            weatherPrediction.setValue(weatherPrediction.getValue() * 2.237);
+            weatherPrediction.setFrom(weatherPrediction.getFrom() * 2.237);
+            weatherPrediction.setTo(weatherPrediction.getTo() * 2.237);
             weatherPrediction.setUnit('m/h');
         }
     }
 
     const convertToMPS = () => {
         if (weatherPrediction.getUnit() !== 'm/s') {
-            weatherPrediction.setValue(weatherPrediction.getValue() / 2.237);
+            weatherPrediction.setFrom(weatherPrediction.getFrom() / 2.237);
+            weatherPrediction.setTo(weatherPrediction.getTo() / 2.237);
             weatherPrediction.setUnit('m/s');
         }
     }

@@ -1,12 +1,13 @@
 import {WeatherPrediction} from "./WeatherPrediction.js";
 
-export function PrecipitationPrediction(value, type, unit, time, place, precipitation_type) {
-    let weatherPrediction = new WeatherPrediction(value, type, unit, time, place);
+export function PrecipitationPrediction(from, to, type, unit, time, place, precipitation_type) {
+    let weatherPrediction = new WeatherPrediction(from, to, type, unit, time, place);
 
     const getPrecipitationType = () => precipitation_type;
 
     const matches = (data) => {
-        return weatherPrediction.getValue() === data.getValue()
+        return weatherPrediction.getFrom() === data.getFrom()
+            && weatherPrediction.getTo() === data.getTo()
             && weatherPrediction.getType() === data.getType()
             && weatherPrediction.getUnit() === data.getUnit()
             && weatherPrediction.getTime() === data.getTime()
@@ -15,14 +16,16 @@ export function PrecipitationPrediction(value, type, unit, time, place, precipit
 
     const convertToInches = () => {
         if (weatherPrediction.getUnit() !== 'in') {
-            weatherPrediction.setValue(weatherPrediction.getValue() / 25.4);
+            weatherPrediction.setFrom(weatherPrediction.getFrom() / 25.4);
+            weatherPrediction.setTo(weatherPrediction.getTo() / 25.4);
             weatherPrediction.setUnit('in');
         }
     }
 
     const convertToMM = () => {
         if (weatherPrediction.getUnit() !== 'mm') {
-            weatherPrediction.setValue(weatherPrediction.getValue() * 25.4);
+            weatherPrediction.setFrom(weatherPrediction.getFrom() * 25.4);
+            weatherPrediction.setTo(weatherPrediction.getTo() * 25.4);
             weatherPrediction.setUnit('mm');
         }
     }

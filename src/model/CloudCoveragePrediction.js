@@ -1,7 +1,7 @@
 import {WeatherPrediction} from "./WeatherPrediction.js";
 
-export function CloudCoveragePrediction(value, type, unit, time, place) {
-    let weatherPrediction = new WeatherPrediction(value, type, unit);
+export function CloudCoveragePrediction(from, to, type, unit, time, place) {
+    let weatherPrediction = new WeatherPrediction(from, to, type, unit, time, place);
     return {
         ...weatherPrediction
     };
