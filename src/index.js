@@ -78,6 +78,31 @@ function constructMeasurementForMinimumTemperatureLastDay(city, data){
     container.appendChild(measurementsForMinimumTemperatureLastDayParagraph);
 }
 
+function constructMeasurementForTotalPrecipitationLastDay(city, data){
+    const measurementForTotalPrecipitationLastDay = document.createElement('p');
+    const cityParagraph = document.createElement('p');
+    const container = document.getElementById("measurementsForMinimumTemperatureLastDay");
+    cityParagraph.textContent = city;
+    container.appendChild(cityParagraph);
+
+    const lastDay = new Date();
+    lastDay.setDate(lastDay.getDate() - 1);
+    let totalPrecipitationLastDay = 0;
+    const measurementsForPrecipitationLastDay = data.forEach(measurement => {
+        const isLastDay = isSameDay(measurement.getTime(), lastDay);
+        const isPrecipitation = measurement.getType() === "precipitation";
+
+        if (isLastDay && isPrecipitation) {
+            measurement.convertToMM();
+            totalPrecipitationLastDay += measurement.getValue();
+            console.log(totalPrecipitationLastDay);
+        }
+    });
+
+    measurementForTotalPrecipitationLastDay.textContent = "Measurements for total precipitation in the last day " + Number(totalPrecipitationLastDay).toFixed(2) + "mm";
+    container.appendChild(measurementForTotalPrecipitationLastDay);
+}
+
 function constructAverageWindSpeedForLastDay(city, data){
     const averageWindSpeedForLastDayParagraph = document.createElement('p');
     const cityParagraph = document.createElement('p');
@@ -118,10 +143,22 @@ async function displayMinimumTemperatureForLastDay() {
     }
 }
 
+async function displayTotalPrecipitationForLastDay() {
+    try {
+        for (const city of cities) {
+            const data = await fetchDataByPlace(city);
+            constructMeasurementForTotalPrecipitationLastDay(city, data);
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 async function displayDataForWholePage() {
     await displayDataPerCities();
     await displayMeasurementsForNext24Hours();
     await displayMinimumTemperatureForLastDay();
+    await displayTotalPrecipitationForLastDay();
 }
 document.addEventListener('DOMContentLoaded', displayDataForWholePage);
 
