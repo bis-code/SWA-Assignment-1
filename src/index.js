@@ -88,7 +88,7 @@ function constructMeasurementForTotalPrecipitationLastDay(city, data){
     const lastDay = new Date();
     lastDay.setDate(lastDay.getDate() - 1);
     let totalPrecipitationLastDay = 0;
-    const measurementsForPrecipitationLastDay = data.forEach(measurement => {
+    data.forEach(measurement => {
         const isLastDay = isSameDay(measurement.getTime(), lastDay);
         const isPrecipitation = measurement.getType() === "precipitation";
 
