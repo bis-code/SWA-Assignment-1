@@ -1,5 +1,5 @@
-const {createWheaterData, WeatherData} = require("./WheaterData");
-const {MPH_TYPE, MPH_UNIT, MPS_TYPE, DIRECTION} = require("./constants/Constants");
+const {WeatherData} = require("./WheaterData");
+const {MPH_UNIT, MPS_UNIT} = require("./constants/Constants");
 
 function createWind(value, type, unit, time, place, direction) {
 
@@ -14,18 +14,16 @@ function createWind(value, type, unit, time, place, direction) {
     }
 
     const convertToMPH = () => {
-        if (wind.getUnit() !== MPH_UNIT) {
-            wind.setValue(wind.getValue() * 2.237);
-            wind.setUnit(MPH_UNIT);
-            wind.setDirection(DIRECTION);
+        if (weatherData.getUnit() !== MPH_UNIT) {
+            weatherData.setValue(weatherData.getValue() * 2.237);
+            weatherData.setUnit(MPH_UNIT);
         }
     }
 
     const convertToMPS = () => {
-        if (wind.getUnit() !== MPS_UNIT) {
-            wind.setValue(wind.getValue() / 2.237);
-            wind.setUnit(MPS_UNIT);
-            wind.setDirection(DIRECTION);
+        if (weatherData.getUnit() !== MPS_UNIT) {
+            weatherData.setValue(weatherData.getValue() / 2.237);
+            weatherData.setUnit(MPS_UNIT);
         }
     }
 

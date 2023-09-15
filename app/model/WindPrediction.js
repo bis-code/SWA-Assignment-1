@@ -1,31 +1,36 @@
-const {createWeatherPrediction} = require("./WeatherPrediction");
+const {createWeatherPrediction, WeatherPrediction} = require("./WeatherPrediction");
 const {DIRECTION, MPH_TYPE, MPH_UNIT, MPS_TYPE} = require("./constants/Constants");
 
 function createWindPrediction(value, type, unit, time, place, direction) {
-    let weatherPrediction = createWeatherPrediction(value, type, unit, time, place);
+    let weatherPrediction = new WeatherPrediction(value, type, unit, time, place);
 
-    let windPrediction = Object.assign({}, weatherPrediction);
-    windPrediction.direction = direction;
+    const getExpectedDirections = () => weatherPrediction.direction;
 
-    windPrediction.getExpectedDirections = () => windPrediction.direction;
+    const matches = (data) => weatherPrediction.matches(data);
 
-    windPrediction.matches = (data) => weatherPrediction.matches(data);
-
-    windPrediction.convertToMPH = () => {
-        windPrediction.setValue(windPrediction.getValue() * 2.237);
-        windPrediction.setType(MPH_TYPE);
-        windPrediction.setUnit(MPH_UNIT);
-        windPrediction.setDirection(DIRECTION);
+    const convertToMPH = () => {
+        weatherPrediction.setValue(weatherPrediction.getValue() * 2.237);
+        weatherPrediction.setType(MPH_TYPE);
+        weatherPrediction.setUnit(MPH_UNIT);
+        weatherPrediction.setDirection(DIRECTION);
     }
 
-    windPrediction.convertToMPS = () => {
-        windPrediction.setValue(windPrediction.getValue() / 2.237);
-        windPrediction.setType(MPS_TYPE);
-        windPrediction.setUnit(MPH_UNIT);
-        windPrediction.setDirection(DIRECTION);
+    const convertToMPS = () => {
+        weatherPrediction.setValue(weatherPrediction.getValue() / 2.237);
+        weatherPrediction.setType(MPS_TYPE);
+        weatherPrediction.setUnit(MPH_UNIT);
+        weatherPrediction.setDirection(DIRECTION);
     }
+
+    return {
+        ...weatherPrediction,
+        getExpectedDirections,
+        matches,
+        convertToMPH,
+        convertToMPS
+    };
 }
 
 module.exports = {
-    createWindPrediction,
+    WindPrediction: createWindPrediction,
 }

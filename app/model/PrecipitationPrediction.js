@@ -1,36 +1,42 @@
-import {createWeatherPrediction} from "./WeatherPrediction";
-import {INCH_TYPE, INCH_UNIT, MM_TYPE, MM_UNIT} from "./constants/Constants";
+import {createWeatherPrediction, WeatherPrediction} from "./WeatherPrediction";
+import {INCH_UNIT, MM_UNIT} from "./constants/Constants";
 
 function createPrecipitationPrediction(value, type, unit, time, place, precipitation_type) {
-    let weatherPrediction = createWeatherPrediction(value, type, unit, time, place);
+    let weatherPrediction = new WeatherPrediction(value, type, unit, time, place);
 
-    let precipitationPrediction = Object.assign({}, weatherPrediction);
+    const getPrecipitationType = () => precipitation_type;
 
-    precipitationPrediction.precipitation_type = precipitationPrediction;
-
-    precipitationPrediction.getExpectedTypes = () => precipitationPrediction.precipitation_type;
-
-    precipitationPrediction.matches = (data) => {
-        return weatherPrediction.matches(data);
+    const matches = (data) => {
+        return weatherPrediction.getValue() === data.getValue()
+            && weatherPrediction.getType() === data.getType()
+            && weatherPrediction.getUnit() === data.getUnit()
+            && weatherPrediction.getTime() === data.getTime()
+            && weatherPrediction.getPlace() === data.getPlace();
     }
 
-    precipitationPrediction.convertToInches = () => {
-        if (precipitationPrediction.getType() !== INCH_TYPE) {
-            precipitationPrediction.setValue(precipitationPrediction.getValue() / 25.4);
-            precipitationPrediction.setType(INCH_TYPE);
-            precipitationPrediction.setUnit(INCH_UNIT);
+    const convertToInches = () => {
+        if (weatherPrediction.getUnit() !== INCH_UNIT) {
+            weatherPrediction.setValue(weatherPrediction.getValue() / 25.4);
+            weatherPrediction.setUnit(INCH_UNIT);
         }
     }
 
-    precipitationPrediction.convertToMM = () => {
-        if (precipitationPrediction.getType() !== MM_TYPE) {
-            precipitationPrediction.setValue(precipitationPrediction.getValue() * 25.4);
-            precipitationPrediction.setType(MM_TYPE);
-            precipitationPrediction.setUnit(MM_UNIT);
+    const convertToMM = () => {
+        if (weatherPrediction.getUnit() !== MM_UNIT) {
+            weatherPrediction.setValue(weatherPrediction.getValue() * 25.4);
+            weatherPrediction.setUnit(MM_UNIT);
         }
+    }
+
+    return {
+        ...weatherPrediction,
+        matches,
+        getPrecipitationType,
+        convertToMM,
+        convertToInches
     }
 }
 
 module.exports = {
-    createPrecipitationPrediction
+    PrecipitationPrediction : createPrecipitationPrediction
 }
