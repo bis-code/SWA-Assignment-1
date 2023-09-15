@@ -4,7 +4,6 @@ import {addHoursToDate, isDateBetween, isSameDay} from "./utils/date.utils.js";
 
 const cities = ['Horsens', 'Aarhus', 'Copenhagen']
 const currentDate = new Date();
-const requestButton = document.getElementById('requestButton');
 
 async function displayDataPerCities() {
     try {
@@ -70,13 +69,64 @@ function constructMeasurementForMinimumTemperatureLastDay(city, data){
         const isTemperature = measurement.getType() === "temperature";
         return isLastDay && isTemperature;
     }).map(measurement => {
-        console.log(measurement.getValue());
+        measurement.convertToC();
         return measurement.getValue();
     });
     const minimumUnitOfMeasurementsForLastDay = Math.min(...measurementsForMinimumTemperatureLastDay);
-    measurementsForMinimumTemperatureLastDayParagraph.textContent = "Measurements for the minimum temperature in the last day " + minimumUnitOfMeasurementsForLastDay;
+    measurementsForMinimumTemperatureLastDayParagraph.textContent = "Measurements for the minimum temperature in the last day " + minimumUnitOfMeasurementsForLastDay + "C";
     container.appendChild(measurementsForMinimumTemperatureLastDayParagraph);
 }
+
+function constructMeasurementForTotalPrecipitationLastDay(city, data){
+    const measurementForTotalPrecipitationLastDay = document.createElement('p');
+    const cityParagraph = document.createElement('p');
+    const container = document.getElementById("measurementsForMinimumTemperatureLastDay");
+    cityParagraph.textContent = city;
+    container.appendChild(cityParagraph);
+
+    const lastDay = new Date();
+    lastDay.setDate(lastDay.getDate() - 1);
+    let totalPrecipitationLastDay = 0;
+    data.forEach(measurement => {
+        const isLastDay = isSameDay(measurement.getTime(), lastDay);
+        const isPrecipitation = measurement.getType() === "precipitation";
+
+        if (isLastDay && isPrecipitation) {
+            measurement.convertToMM();
+            totalPrecipitationLastDay += measurement.getValue();
+            console.log(totalPrecipitationLastDay);
+        }
+    });
+
+    measurementForTotalPrecipitationLastDay.textContent = "Measurements for total precipitation in the last day " + Number(totalPrecipitationLastDay).toFixed(2) + "mm";
+    container.appendChild(measurementForTotalPrecipitationLastDay);
+}
+
+function constructAverageWindSpeedForLastDay(city, data) {
+    const averageWindSpeedForLastDayParagraph = document.createElement('p');
+    const cityParagraph = document.createElement('p');
+    const container = document.getElementById("averageWindSpeedForLastDay");
+    cityParagraph.textContent = city;
+    container.appendChild(cityParagraph);
+    const lastDay = new Date();
+    lastDay.setDate(lastDay.getDate() - 1);
+    let totalWindSpeed = 0;
+    let totalLengthOfWindMeasurements = 0;
+    data.forEach(measurement => {
+        const isLastDay = isSameDay(measurement.getTime(), lastDay);
+        const isWind = measurement.getType() === "wind speed";
+
+        if (isLastDay && isWind) {
+            measurement.convertToMPH();
+            totalWindSpeed += measurement.getValue();
+            totalLengthOfWindMeasurements++;
+        }
+    });
+    averageWindSpeedForLastDayParagraph.textContent = "Average wind speed for the last day " + Number(totalWindSpeed/totalLengthOfWindMeasurements).toFixed(2) + " MPH";
+    container.appendChild(averageWindSpeedForLastDayParagraph);
+}
+
+
 
 function constructMeasurementForMaximumTemperatureLastDay(city, data){
     const measurementsForMaximumTemperatureLastDayParagraph = document.createElement('p');
@@ -122,6 +172,28 @@ async function displayMinimumTemperatureForLastDay() {
     }
 }
 
+async function displayTotalPrecipitationForLastDay() {
+    try {
+        for (const city of cities) {
+            const data = await fetchDataByPlace(city);
+            constructMeasurementForTotalPrecipitationLastDay(city, data);
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function displayAverageWindSpeedForLastDay() {
+    try {
+        for (const city of cities) {
+            const data = await fetchDataByPlace(city);
+            constructAverageWindSpeedForLastDay(city, data);
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 async function displayMaximumTemperatureForLastDay() {
     try {
         for (const city of cities) {
@@ -133,21 +205,13 @@ async function displayMaximumTemperatureForLastDay() {
     }
 }
 
- 
+
 async function displayDataForWholePage() {
     await displayDataPerCities();
     await displayMeasurementsForNext24Hours();
     await displayMinimumTemperatureForLastDay();
+    await displayTotalPrecipitationForLastDay();
+    await displayAverageWindSpeedForLastDay();
     await displayMaximumTemperatureForLastDay();
 }
 document.addEventListener('DOMContentLoaded', displayDataForWholePage);
-
-requestButton.addEventListener("click", async () =>{
-    try{
-        const data = await fetchDataForecast();
-        console.log(data);
-        document.getElementById("requestResult").textContent = data[0].getTo();
-    } catch (error){
-        console.error(error);
-    }
-});
