@@ -6,7 +6,6 @@ const currentDate = new Date();
 
 async function displayDataPerCities() {
     try {
-        const container = document.getElementById("latestMeasurements");
         for (const city of cities) {
             const data = await fetchDataByPlace(city);
             constructLatestMeasurement(city, data);
