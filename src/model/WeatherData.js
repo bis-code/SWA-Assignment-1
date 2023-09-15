@@ -1,4 +1,5 @@
-function createWheaterData(value, type, unit, time, place) {
+import {Event} from "./Event.js";
+export function WeatherData(value, type, unit, time, place) {
     let event = new Event(time, place);
 
     const getValue = function () {

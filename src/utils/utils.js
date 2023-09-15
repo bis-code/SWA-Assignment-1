@@ -1,4 +1,10 @@
-function deserializedData(jsonData) {
+import {CloudCoverage} from "../model/CloudCoverage.js";
+import {Precipitation} from "../model/Precipitation.js";
+import {Wind} from "../model/Wind.js";
+import {Temperature} from "../model/Temperature.js";
+
+export function deserializedData(jsonData) {
+    console.log(jsonData);
     const deserializedData = jsonData.map(item => {
         try {
             switch (item.type) {
@@ -25,7 +31,7 @@ function deserializedData(jsonData) {
     return deserializedData.filter(item => item !== null);
 }
 
-function deserializedDataPrediction(jsonData) {
+export function deserializedDataPrediction(jsonData) {
     const deserializedDataPrediction = jsonData.map(item => {
         try {
             switch (item.type) {

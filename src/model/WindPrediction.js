@@ -1,4 +1,6 @@
-function createWindPrediction(value, type, unit, time, place, direction) {
+import {WeatherPrediction} from "./WeatherPrediction.js";
+
+export function WindPrediction(value, type, unit, time, place, direction) {
     let weatherPrediction = new WeatherPrediction(value, type, unit, time, place);
 
     const getExpectedDirections = () => direction;

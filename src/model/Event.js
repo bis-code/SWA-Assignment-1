@@ -1,4 +1,4 @@
-function Event(time, place) {
+export function Event(time, place) {
     const getTime = () => {
         return time;
     };

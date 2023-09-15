@@ -1,4 +1,6 @@
-function createWind(value, type, unit, time, place, direction) {
+import {WeatherData} from "./WeatherData.js";
+
+export function Wind(value, type, unit, time, place, direction) {
 
     let weatherData = new WeatherData(value, type, unit, time, place);
 

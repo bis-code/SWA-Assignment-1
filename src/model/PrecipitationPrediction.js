@@ -1,4 +1,6 @@
-function createPrecipitationPrediction(value, type, unit, time, place, precipitation_type) {
+import {WeatherPrediction} from "./WeatherPrediction.js";
+
+export function PrecipitationPrediction(value, type, unit, time, place, precipitation_type) {
     let weatherPrediction = new WeatherPrediction(value, type, unit, time, place);
 
     const getPrecipitationType = () => precipitation_type;
