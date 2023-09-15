@@ -11,7 +11,5 @@ export function addHoursToDate(date, hours){
 
 export function isDateBetween(checkDate, dateFrom, dateTo){
     checkDate = new Date(checkDate);
-    const dummy =  checkDate.valueOf() >= dateFrom.valueOf() && checkDate.valueOf() <= dateTo.valueOf();
-    console.log(dummy);
-    return dummy;
+    return checkDate.valueOf() >= dateFrom.valueOf() && checkDate.valueOf() <= dateTo.valueOf();
 }
