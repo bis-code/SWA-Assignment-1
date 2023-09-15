@@ -26,6 +26,8 @@ export function WeatherData(value, type, unit, time, place) {
         unit = _unit;
     }
 
+    const toString = () => `${type} ${value} ${unit}`;
+
     return {
         ...event,
         getValue,
@@ -33,7 +35,8 @@ export function WeatherData(value, type, unit, time, place) {
         getType,
         setType,
         getUnit,
-        setUnit
+        setUnit,
+        toString
     };
 
 }

@@ -9,16 +9,16 @@ export function deserializedData(jsonData) {
         try {
             switch (item.type) {
                 case 'temperature': {
-                    return new Temperature(item.value, item.type, item.unit, item.time, item.place);
+                    return new Temperature(item.value, item.type, item.unit, new Date(item.time), item.place);
                 }
                 case 'precipitation': {
-                    return new Precipitation(item.value, item.type, item.unit, item.time, item.place, item.precipitation_type);
+                    return new Precipitation(item.value, item.type, item.unit, new Date(item.time), item.place, item.precipitation_type);
                 }
                 case 'wind speed': {
-                    return new Wind(item.value, item.type, item.unit, item.time, item.place, item.direction);
+                    return new Wind(item.value, item.type, item.unit, new Date(item.time), item.place, item.direction);
                 }
                 case 'cloud coverage': {
-                    return new CloudCoverage(item.value, item.type, item.unit, item.time, item.place);
+                    return new CloudCoverage(item.value, item.type, item.unit, new Date(item.time), item.place);
                 }
                 default:
                     return null;
@@ -36,16 +36,16 @@ export function deserializedDataPrediction(jsonData) {
         try {
             switch (item.type) {
                 case 'temperature': {
-                    return new TemperaturePrediction(item.value, item.type, item.unit, item.time, item.place);
+                    return new TemperaturePrediction(item.value, item.type, item.unit, new Date(item.time), item.place);
                 }
                 case 'precipitation': {
-                    return new PrecipitationPrediction(item.value, item.type, item.unit, item.time, item.place, item.precipitation_type);
+                    return new PrecipitationPrediction(item.value, item.type, item.unit, new Date(item.time), item.place, item.precipitation_type);
                 }
                 case 'wind speed': {
-                    return new WindPrediction(item.value, item.type, item.unit, item.time, item.place, item.direction);
+                    return new WindPrediction(item.value, item.type, item.unit, new Date(item.time), item.place, item.direction);
                 }
                 case 'cloud coverage': {
-                    return new CloudCoveragePrediction(item.value, item.type, item.unit, item.time, item.place);
+                    return new CloudCoveragePrediction(item.value, item.type, item.unit, new Date(item.time), item.place);
                 }
                 default:
                     return null;
@@ -57,3 +57,4 @@ export function deserializedDataPrediction(jsonData) {
     });
     return deserializedDataPrediction.filter(item => item !== null);
 }
+
