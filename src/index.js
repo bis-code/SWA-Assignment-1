@@ -128,6 +128,28 @@ function constructAverageWindSpeedForLastDay(city, data) {
 
 
 
+function constructMeasurementForMaximumTemperatureLastDay(city, data){
+    const measurementsForMaximumTemperatureLastDayParagraph = document.createElement('p');
+    const cityParagraph = document.createElement('p');
+    const container = document.getElementById("measurementsForMaximumTemperatureLastDay");
+    cityParagraph.textContent = city;
+    container.appendChild(cityParagraph);
+    const lastDay = new Date();
+    lastDay.setDate(lastDay.getDate() - 1);
+    const measurementsForMaximumTemperatureLastDay = data.filter(measurement => {
+        const isLastDay = isSameDay(measurement.getTime(), lastDay);
+        const isTemperature = measurement.getType() === "temperature";
+        return isLastDay && isTemperature;
+    }).map(measurement => {
+        console.log(measurement.getValue());
+        return measurement.getValue();
+    });
+    const maximumUnitOfMeasurementsForLastDay = Math.max(...measurementsForMaximumTemperatureLastDay);
+    measurementsForMaximumTemperatureLastDayParagraph.textContent = "Measurements for the maximum temperature in the last day " + maximumUnitOfMeasurementsForLastDay;
+    container.appendChild(measurementsForMaximumTemperatureLastDayParagraph);
+}
+
+
 async function displayMeasurementsForNext24Hours() {
     try {
         for (const city of cities) {
@@ -172,11 +194,24 @@ async function displayAverageWindSpeedForLastDay() {
     }
 }
 
+async function displayMaximumTemperatureForLastDay() {
+    try {
+        for (const city of cities) {
+            const data = await fetchDataByPlace(city);
+            constructMeasurementForMaximumTemperatureLastDay(city, data);
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+
 async function displayDataForWholePage() {
     await displayDataPerCities();
     await displayMeasurementsForNext24Hours();
     await displayMinimumTemperatureForLastDay();
     await displayTotalPrecipitationForLastDay();
     await displayAverageWindSpeedForLastDay();
+    await displayMaximumTemperatureForLastDay();
 }
 document.addEventListener('DOMContentLoaded', displayDataForWholePage);
