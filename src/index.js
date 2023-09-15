@@ -103,7 +103,7 @@ function constructMeasurementForTotalPrecipitationLastDay(city, data){
     container.appendChild(measurementForTotalPrecipitationLastDay);
 }
 
-function constructAverageWindSpeedForLastDay(city, data){
+function constructAverageWindSpeedForLastDay(city, data) {
     const averageWindSpeedForLastDayParagraph = document.createElement('p');
     const cityParagraph = document.createElement('p');
     const container = document.getElementById("averageWindSpeedForLastDay");
@@ -111,15 +111,23 @@ function constructAverageWindSpeedForLastDay(city, data){
     container.appendChild(cityParagraph);
     const lastDay = new Date();
     lastDay.setDate(lastDay.getDate() - 1);
-    const averageWindSpeedForLastDay = data.filter(measurement => {
+    let totalWindSpeed = 0;
+    let totalLengthOfWindMeasurements = 0;
+    data.forEach(measurement => {
         const isLastDay = isSameDay(measurement.getTime(), lastDay);
-        const isWind = measurement.getType() === "wind";
-        return isLastDay && isWind;
-    }).map(measurement => {
-        measurement.convertToMPH();
-        return measurement.getValue();
+        const isWind = measurement.getType() === "wind speed";
+
+        if (isLastDay && isWind) {
+            measurement.convertToMPH();
+            totalWindSpeed += measurement.getValue();
+            totalLengthOfWindMeasurements++;
+        }
     });
+    averageWindSpeedForLastDayParagraph.textContent = "Average wind speed for the last day " + Number(totalWindSpeed/totalLengthOfWindMeasurements).toFixed(2) + " MPH";
+    container.appendChild(averageWindSpeedForLastDayParagraph);
 }
+
+
 
 async function displayMeasurementsForNext24Hours() {
     try {
@@ -154,11 +162,23 @@ async function displayTotalPrecipitationForLastDay() {
     }
 }
 
+async function displayAverageWindSpeedForLastDay() {
+    try {
+        for (const city of cities) {
+            const data = await fetchDataByPlace(city);
+            constructAverageWindSpeedForLastDay(city, data);
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 async function displayDataForWholePage() {
     await displayDataPerCities();
     await displayMeasurementsForNext24Hours();
     await displayMinimumTemperatureForLastDay();
     await displayTotalPrecipitationForLastDay();
+    await displayAverageWindSpeedForLastDay();
 }
 document.addEventListener('DOMContentLoaded', displayDataForWholePage);
 
