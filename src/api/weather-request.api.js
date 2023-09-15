@@ -1,3 +1,5 @@
+import {deserializedDataPrediction} from "../utils/utils.js";
+
 async function fetchDataForecastByPlace(place) {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
@@ -31,7 +33,7 @@ async function fetchDataForecastByPlace(place) {
     });
 }
 
-async function fetchDataForecast() {
+export async function fetchDataForecast() {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
         xhr.open("GET", "http://localhost:8080/forecast");
