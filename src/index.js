@@ -39,7 +39,7 @@ function constructLatestMeasurement(city, data) {
     });
 }
 
-function displayDataForWholePage() {
-
+async function displayDataForWholePage() {
+    await displayDataPerCities();
 }
-document.addEventListener('DOMContentLoaded', displayDataPerCities);
+document.addEventListener('DOMContentLoaded', displayDataForWholePage);
