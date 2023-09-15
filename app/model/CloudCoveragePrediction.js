@@ -3,12 +3,11 @@ const {createWeatherPrediction} = require("./WeatherPrediction");
 
 function createCloudCoveragePrediction(value, type, unit, time, place) {
     let weatherPrediction = createWeatherPrediction(value, type, unit);
-
-    let cloudCoveragePrediction = Object.assign({}, weatherPrediction);
-
-    return cloudCoveragePrediction;
+    return {
+        ...weatherPrediction
+    };
 }
 
 module.exports = {
-    createCloudCoveragePrediction
+    CloudCoveragePrediction : createCloudCoveragePrediction
 }
