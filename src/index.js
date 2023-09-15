@@ -4,7 +4,6 @@ import {addHoursToDate, isDateBetween, isSameDay} from "./utils/date.utils.js";
 
 const cities = ['Horsens', 'Aarhus', 'Copenhagen']
 const currentDate = new Date();
-const requestButton = document.getElementById('requestButton');
 
 async function displayDataPerCities() {
     try {
@@ -143,13 +142,3 @@ async function displayDataForWholePage() {
     await displayTotalPrecipitationForLastDay();
 }
 document.addEventListener('DOMContentLoaded', displayDataForWholePage);
-
-requestButton.addEventListener("click", async () =>{
-    try{
-        const data = await fetchDataForecast();
-        console.log(data);
-        document.getElementById("requestResult").textContent = data[0].getTo();
-    } catch (error){
-        console.error(error);
-    }
-});
