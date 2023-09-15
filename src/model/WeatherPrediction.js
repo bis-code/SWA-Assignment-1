@@ -28,6 +28,8 @@ export function WeatherPrediction(from, to, type, unit, time, place) {
         return unit;
     };
 
+    const toString = () => `${type} between ${to}${unit} and ${from}${unit} at ${time}`;
+
     return {
         ...event,
         getFrom,
@@ -36,5 +38,6 @@ export function WeatherPrediction(from, to, type, unit, time, place) {
         getUnit,
         setFrom,
         setTo,
+        toString,
     };
 }

@@ -1,6 +1,6 @@
 import {deserializedDataPrediction} from "../utils/utils.js";
 
-async function fetchDataForecastByPlace(place) {
+export async function fetchDataForecastByPlace(place) {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
         xhr.open("GET", `http://localhost:8080/forecast/${place}`);
