@@ -70,12 +70,30 @@ function constructMeasurementForMinimumTemperatureLastDay(city, data){
         const isTemperature = measurement.getType() === "temperature";
         return isLastDay && isTemperature;
     }).map(measurement => {
-        console.log(measurement.getValue());
+        measurement.convertToC();
         return measurement.getValue();
     });
     const minimumUnitOfMeasurementsForLastDay = Math.min(...measurementsForMinimumTemperatureLastDay);
-    measurementsForMinimumTemperatureLastDayParagraph.textContent = "Measurements for the minimum temperature in the last day " + minimumUnitOfMeasurementsForLastDay;
+    measurementsForMinimumTemperatureLastDayParagraph.textContent = "Measurements for the minimum temperature in the last day " + minimumUnitOfMeasurementsForLastDay + "C";
     container.appendChild(measurementsForMinimumTemperatureLastDayParagraph);
+}
+
+function constructAverageWindSpeedForLastDay(city, data){
+    const averageWindSpeedForLastDayParagraph = document.createElement('p');
+    const cityParagraph = document.createElement('p');
+    const container = document.getElementById("averageWindSpeedForLastDay");
+    cityParagraph.textContent = city;
+    container.appendChild(cityParagraph);
+    const lastDay = new Date();
+    lastDay.setDate(lastDay.getDate() - 1);
+    const averageWindSpeedForLastDay = data.filter(measurement => {
+        const isLastDay = isSameDay(measurement.getTime(), lastDay);
+        const isWind = measurement.getType() === "wind";
+        return isLastDay && isWind;
+    }).map(measurement => {
+        measurement.convertToMPH();
+        return measurement.getValue();
+    });
 }
 
 async function displayMeasurementsForNext24Hours() {
