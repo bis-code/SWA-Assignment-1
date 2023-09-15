@@ -1,25 +1,26 @@
-import {fetchData, fetchDataByPlace} from "./api/weather-fetch.api.js";
-import {fetchDataForecast, fetchDataForecastByPlace} from "./api/weather-request.api.js"
-import {addHoursToDate, isDateBetween, isSameDay} from "./utils/date.utils.js";
+import { fetchDataByPlace } from "./api/weather-fetch.api.js";
+import { fetchDataForecastByPlace } from "./api/weather-request.api.js";
+import { addHoursToDate, isDateBetween, isSameDay } from "./utils/date.utils.js";
 
-const cities = ['Horsens', 'Aarhus', 'Copenhagen']
+const cities = ['Horsens', 'Aarhus', 'Copenhagen'];
 const currentDate = new Date();
 
 async function displayDataPerCities() {
     try {
-        for (const city of cities) {
+        for (let i = 0; i < cities.length; i++) {
+            const city = cities[i];
             const data = await fetchDataByPlace(city);
-            constructLatestMeasurement(city, data);
+            constructLatestMeasurement(city, data, i + 1);
         }
     } catch (error) {
         console.error(error);
     }
 }
 
-function constructLatestMeasurement(city, data) {
+function constructLatestMeasurement(city, data, cityIndex) {
     const latestMeasurement = document.createElement('p');
     const cityParagraph = document.createElement('p');
-    const container = document.getElementById("latestMeasurements");
+    const container = document.getElementById(`latestMeasurements${cityIndex}`);
     latestMeasurement.textContent = 'Latest measurement per city';
     cityParagraph.textContent = city;
     container.appendChild(latestMeasurement);
@@ -31,17 +32,15 @@ function constructLatestMeasurement(city, data) {
 
     latestMeasurementData.forEach((measurement) => {
         const measurementParagraph = document.createElement('p');
-
         measurementParagraph.textContent = measurement.toString();
-
         container.appendChild(measurementParagraph);
     });
 }
 
-function constructMeasurementsIn24Hours(city, data){
+function constructMeasurementsIn24Hours(city, data, cityIndex) {
     const measurementsIn24HoursParagraph = document.createElement('p');
     const cityParagraph = document.createElement('p');
-    const container = document.getElementById("measurementsIn24Hours");
+    const container = document.getElementById(`measurementsIn24Hours${cityIndex}`);
     measurementsIn24HoursParagraph.textContent = "Measurements in 24 hours";
     cityParagraph.textContent = city;
     container.appendChild(measurementsIn24HoursParagraph);
@@ -56,10 +55,10 @@ function constructMeasurementsIn24Hours(city, data){
     });
 }
 
-function constructMeasurementForMinimumTemperatureLastDay(city, data){
+function constructMeasurementForMinimumTemperatureLastDay(city, data, cityIndex) {
     const measurementsForMinimumTemperatureLastDayParagraph = document.createElement('p');
     const cityParagraph = document.createElement('p');
-    const container = document.getElementById("measurementsForMinimumTemperatureLastDay");
+    const container = document.getElementById(`measurementsForMinimumTemperatureLastDay${cityIndex}`);
     cityParagraph.textContent = city;
     container.appendChild(cityParagraph);
     const lastDay = new Date();
@@ -77,10 +76,10 @@ function constructMeasurementForMinimumTemperatureLastDay(city, data){
     container.appendChild(measurementsForMinimumTemperatureLastDayParagraph);
 }
 
-function constructMeasurementForTotalPrecipitationLastDay(city, data){
+function constructMeasurementForTotalPrecipitationLastDay(city, data, cityIndex) {
     const measurementForTotalPrecipitationLastDay = document.createElement('p');
     const cityParagraph = document.createElement('p');
-    const container = document.getElementById("measurementsForMinimumTemperatureLastDay");
+    const container = document.getElementById(`measurementsForTotalPrecipitationLastDay${cityIndex}`);
     cityParagraph.textContent = city;
     container.appendChild(cityParagraph);
 
@@ -94,7 +93,6 @@ function constructMeasurementForTotalPrecipitationLastDay(city, data){
         if (isLastDay && isPrecipitation) {
             measurement.convertToMM();
             totalPrecipitationLastDay += measurement.getValue();
-            console.log(totalPrecipitationLastDay);
         }
     });
 
@@ -102,10 +100,10 @@ function constructMeasurementForTotalPrecipitationLastDay(city, data){
     container.appendChild(measurementForTotalPrecipitationLastDay);
 }
 
-function constructAverageWindSpeedForLastDay(city, data) {
+function constructAverageWindSpeedForLastDay(city, data, cityIndex) {
     const averageWindSpeedForLastDayParagraph = document.createElement('p');
     const cityParagraph = document.createElement('p');
-    const container = document.getElementById("averageWindSpeedForLastDay");
+    const container = document.getElementById(`averageWindSpeedForLastDay${cityIndex}`);
     cityParagraph.textContent = city;
     container.appendChild(cityParagraph);
     const lastDay = new Date();
@@ -122,16 +120,14 @@ function constructAverageWindSpeedForLastDay(city, data) {
             totalLengthOfWindMeasurements++;
         }
     });
-    averageWindSpeedForLastDayParagraph.textContent = "Average wind speed for the last day " + Number(totalWindSpeed/totalLengthOfWindMeasurements).toFixed(2) + " MPH";
+    averageWindSpeedForLastDayParagraph.textContent = "Average wind speed for the last day " + Number(totalWindSpeed / totalLengthOfWindMeasurements).toFixed(2) + " MPH";
     container.appendChild(averageWindSpeedForLastDayParagraph);
 }
 
-
-
-function constructMeasurementForMaximumTemperatureLastDay(city, data){
+function constructMeasurementForMaximumTemperatureLastDay(city, data, cityIndex) {
     const measurementsForMaximumTemperatureLastDayParagraph = document.createElement('p');
     const cityParagraph = document.createElement('p');
-    const container = document.getElementById("measurementsForMaximumTemperatureLastDay");
+    const container = document.getElementById(`measurementsForMaximumTemperatureLastDay${cityIndex}`);
     cityParagraph.textContent = city;
     container.appendChild(cityParagraph);
     const lastDay = new Date();
@@ -141,7 +137,6 @@ function constructMeasurementForMaximumTemperatureLastDay(city, data){
         const isTemperature = measurement.getType() === "temperature";
         return isLastDay && isTemperature;
     }).map(measurement => {
-        console.log(measurement.getValue());
         return measurement.getValue();
     });
     const maximumUnitOfMeasurementsForLastDay = Math.max(...measurementsForMaximumTemperatureLastDay);
@@ -149,69 +144,65 @@ function constructMeasurementForMaximumTemperatureLastDay(city, data){
     container.appendChild(measurementsForMaximumTemperatureLastDayParagraph);
 }
 
-
-async function displayMeasurementsForNext24Hours() {
+async function displayMeasurementsForNext24Hours(cityIndex) {
     try {
-        for (const city of cities) {
-            const data = await fetchDataForecastByPlace(city);
-            constructMeasurementsIn24Hours(city, data);
-        }
+        const city = cities[cityIndex - 1];
+        const data = await fetchDataForecastByPlace(city);
+        constructMeasurementsIn24Hours(city, data, cityIndex);
     } catch (error) {
         console.error(error);
     }
 }
 
-async function displayMinimumTemperatureForLastDay() {
+async function displayMinimumTemperatureForLastDay(cityIndex) {
     try {
-        for (const city of cities) {
-            const data = await fetchDataByPlace(city);
-            constructMeasurementForMinimumTemperatureLastDay(city, data);
-        }
+        const city = cities[cityIndex - 1];
+        const data = await fetchDataByPlace(city);
+        constructMeasurementForMinimumTemperatureLastDay(city, data, cityIndex);
     } catch (error) {
         console.error(error);
     }
 }
 
-async function displayTotalPrecipitationForLastDay() {
+async function displayTotalPrecipitationForLastDay(cityIndex) {
     try {
-        for (const city of cities) {
-            const data = await fetchDataByPlace(city);
-            constructMeasurementForTotalPrecipitationLastDay(city, data);
-        }
+        const city = cities[cityIndex - 1];
+        const data = await fetchDataByPlace(city);
+        constructMeasurementForTotalPrecipitationLastDay(city, data, cityIndex);
     } catch (error) {
         console.error(error);
     }
 }
 
-async function displayAverageWindSpeedForLastDay() {
+async function displayAverageWindSpeedForLastDay(cityIndex) {
     try {
-        for (const city of cities) {
-            const data = await fetchDataByPlace(city);
-            constructAverageWindSpeedForLastDay(city, data);
-        }
+        const city = cities[cityIndex - 1];
+        const data = await fetchDataByPlace(city);
+        constructAverageWindSpeedForLastDay(city, data, cityIndex);
     } catch (error) {
         console.error(error);
     }
 }
 
-async function displayMaximumTemperatureForLastDay() {
+async function displayMaximumTemperatureForLastDay(cityIndex) {
     try {
-        for (const city of cities) {
-            const data = await fetchDataByPlace(city);
-            constructMeasurementForMaximumTemperatureLastDay(city, data);
-        }
+        const city = cities[cityIndex - 1];
+        const data = await fetchDataByPlace(city);
+        constructMeasurementForMaximumTemperatureLastDay(city, data, cityIndex);
     } catch (error) {
         console.error(error);
     }
 }
-
 
 async function displayDataForWholePage() {
-    await displayDataPerCities();
-    await displayMeasurementsForNext24Hours();
-    await displayMinimumTemperatureForLastDay();
-    await displayTotalPrecipitationForLastDay();
-    await displayAverageWindSpeedForLastDay();
-    await displayMaximumTemperatureForLastDay();
+    for (let i = 0; i < cities.length; i++) {
+        await displayDataPerCities();
+        await displayMeasurementsForNext24Hours(i + 1);
+        await displayMinimumTemperatureForLastDay(i + 1);
+        await displayTotalPrecipitationForLastDay(i + 1);
+        await displayAverageWindSpeedForLastDay(i + 1);
+        await displayMaximumTemperatureForLastDay(i + 1);
+    }
 }
+
 document.addEventListener('DOMContentLoaded', displayDataForWholePage);

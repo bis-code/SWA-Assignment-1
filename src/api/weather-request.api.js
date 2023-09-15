@@ -44,7 +44,6 @@ export async function fetchDataForecast() {
                 try {
                     const jsonData = JSON.parse(xhr.responseText);
 
-                    console.log(jsonData);
                     const deserialized = deserializedDataPrediction(jsonData);
                     resolve(deserialized);
                 } catch (error) {

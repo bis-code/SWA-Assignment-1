@@ -8,7 +8,6 @@ import {WindPrediction} from "../model/WindPrediction.js";
 import {CloudCoveragePrediction} from "../model/CloudCoveragePrediction.js";
 
 export function deserializedData(jsonData) {
-    console.log(jsonData);
     const deserializedData = jsonData.map(item => {
         try {
             switch (item.type) {
@@ -36,7 +35,6 @@ export function deserializedData(jsonData) {
 }
 
 export function deserializedDataPrediction(jsonData) {
-    console.log(jsonData);
     const deserializedDataPrediction = jsonData.map(item => {
         try {
             switch (item.type) {
