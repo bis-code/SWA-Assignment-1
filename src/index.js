@@ -57,6 +57,27 @@ function constructMeasurementsIn24Hours(city, data){
     });
 }
 
+function constructMeasurementForMinimumTemperatureLastDay(city, data){
+    const measurementsForMinimumTemperatureLastDayParagraph = document.createElement('p');
+    const cityParagraph = document.createElement('p');
+    const container = document.getElementById("measurementsForMinimumTemperatureLastDay");
+    cityParagraph.textContent = city;
+    container.appendChild(cityParagraph);
+    const lastDay = new Date();
+    lastDay.setDate(lastDay.getDate() - 1);
+    const measurementsForMinimumTemperatureLastDay = data.filter(measurement => {
+        const isLastDay = isSameDay(measurement.getTime(), lastDay);
+        const isTemperature = measurement.getType() === "temperature";
+        return isLastDay && isTemperature;
+    }).map(measurement => {
+        console.log(measurement.getValue());
+        return measurement.getValue();
+    });
+    const minimumUnitOfMeasurementsForLastDay = Math.min(...measurementsForMinimumTemperatureLastDay);
+    measurementsForMinimumTemperatureLastDayParagraph.textContent = "Measurements for the minimum temperature in the last day " + minimumUnitOfMeasurementsForLastDay;
+    container.appendChild(measurementsForMinimumTemperatureLastDayParagraph);
+}
+
 async function displayMeasurementsForNext24Hours() {
     try {
         for (const city of cities) {
@@ -68,9 +89,21 @@ async function displayMeasurementsForNext24Hours() {
     }
 }
 
+async function displayMinimumTemperatureForLastDay() {
+    try {
+        for (const city of cities) {
+            const data = await fetchDataByPlace(city);
+            constructMeasurementForMinimumTemperatureLastDay(city, data);
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 async function displayDataForWholePage() {
     await displayDataPerCities();
     await displayMeasurementsForNext24Hours();
+    await displayMinimumTemperatureForLastDay();
 }
 document.addEventListener('DOMContentLoaded', displayDataForWholePage);
 
