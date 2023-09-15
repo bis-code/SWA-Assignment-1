@@ -1,33 +1,40 @@
-import {WeatherData} from "./WeatherData.js";
+import { WeatherData } from "./WeatherData.js";
+import { Event } from "./Event.js";
 
-export function WeatherPrediction(value, type, unit, time, place) {
-    let weatherData = new WeatherData(value, type, unit, time, place);
+export function WeatherPrediction(from, to, type, unit, time, place) {
+    let event = new Event(time, place);
 
-    const matches = (data) => {
-        return weatherData.getValue() === data.getValue()
-            && weatherData.getType() === data.getType()
-            && weatherData.getUnit() === data.getUnit()
-            && weatherData.getTime() === data.getTime()
-            && weatherData.getPlace() === data.getPlace();
+    const getFrom = () => {
+        return from;
+    };
+
+    const getTo = () => {
+        return to;
+    };
+
+    const setFrom = function (_from) {
+        from = _from;
     }
 
-    const getMax = (weatherPrediction_) => {
-        return Math.max(weatherData.getValue(), weatherPrediction_.getValue());
+    const setTo = function (_to) {
+        to = _to;
     }
 
-    const getMin = (weatherPrediction_) => {
-        return Math.min(weatherData.getValue(), weatherPrediction_.getValue());
-    }
+    const getType = function () {
+        return type;
+    };
 
-    const getType = () => weatherData.getType();
-    const getUnit = () => weatherData.getUnit();
+    const getUnit = function () {
+        return unit;
+    };
 
     return {
-        ...weatherData,
-        matches,
-        getMax,
-        getMin,
+        ...event,
+        getFrom,
+        getTo,
         getType,
-        getUnit
+        getUnit,
+        setFrom,
+        setTo,
     };
 }
