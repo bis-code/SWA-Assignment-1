@@ -69,11 +69,11 @@ function constructMeasurementForMinimumTemperatureLastDay(city, data){
         const isTemperature = measurement.getType() === "temperature";
         return isLastDay && isTemperature;
     }).map(measurement => {
-        console.log(measurement.getValue());
+        measurement.convertToC();
         return measurement.getValue();
     });
     const minimumUnitOfMeasurementsForLastDay = Math.min(...measurementsForMinimumTemperatureLastDay);
-    measurementsForMinimumTemperatureLastDayParagraph.textContent = "Measurements for the minimum temperature in the last day " + minimumUnitOfMeasurementsForLastDay;
+    measurementsForMinimumTemperatureLastDayParagraph.textContent = "Measurements for the minimum temperature in the last day " + minimumUnitOfMeasurementsForLastDay + "C";
     container.appendChild(measurementsForMinimumTemperatureLastDayParagraph);
 }
 
@@ -101,6 +101,32 @@ function constructMeasurementForTotalPrecipitationLastDay(city, data){
     measurementForTotalPrecipitationLastDay.textContent = "Measurements for total precipitation in the last day " + Number(totalPrecipitationLastDay).toFixed(2) + "mm";
     container.appendChild(measurementForTotalPrecipitationLastDay);
 }
+
+function constructAverageWindSpeedForLastDay(city, data) {
+    const averageWindSpeedForLastDayParagraph = document.createElement('p');
+    const cityParagraph = document.createElement('p');
+    const container = document.getElementById("averageWindSpeedForLastDay");
+    cityParagraph.textContent = city;
+    container.appendChild(cityParagraph);
+    const lastDay = new Date();
+    lastDay.setDate(lastDay.getDate() - 1);
+    let totalWindSpeed = 0;
+    let totalLengthOfWindMeasurements = 0;
+    data.forEach(measurement => {
+        const isLastDay = isSameDay(measurement.getTime(), lastDay);
+        const isWind = measurement.getType() === "wind speed";
+
+        if (isLastDay && isWind) {
+            measurement.convertToMPH();
+            totalWindSpeed += measurement.getValue();
+            totalLengthOfWindMeasurements++;
+        }
+    });
+    averageWindSpeedForLastDayParagraph.textContent = "Average wind speed for the last day " + Number(totalWindSpeed/totalLengthOfWindMeasurements).toFixed(2) + " MPH";
+    container.appendChild(averageWindSpeedForLastDayParagraph);
+}
+
+
 
 async function displayMeasurementsForNext24Hours() {
     try {
@@ -135,10 +161,22 @@ async function displayTotalPrecipitationForLastDay() {
     }
 }
 
+async function displayAverageWindSpeedForLastDay() {
+    try {
+        for (const city of cities) {
+            const data = await fetchDataByPlace(city);
+            constructAverageWindSpeedForLastDay(city, data);
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 async function displayDataForWholePage() {
     await displayDataPerCities();
     await displayMeasurementsForNext24Hours();
     await displayMinimumTemperatureForLastDay();
     await displayTotalPrecipitationForLastDay();
+    await displayAverageWindSpeedForLastDay();
 }
 document.addEventListener('DOMContentLoaded', displayDataForWholePage);
