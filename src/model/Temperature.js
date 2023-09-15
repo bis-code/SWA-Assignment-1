@@ -1,4 +1,6 @@
-function createTemperature(value, type, unit, time, place) {
+import {WeatherData} from "./WeatherData.js";
+
+export function Temperature(value, type, unit, time, place) {
     let weatherData = new WeatherData(value, type, unit, time, place);
 
     const convertToF = () => {

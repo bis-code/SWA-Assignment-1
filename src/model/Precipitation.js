@@ -1,4 +1,6 @@
-function Precipitation(value, type, unit, time, place, precipitation_type) {
+import {WeatherData} from "./WeatherData.js";
+
+export function Precipitation(value, type, unit, time, place, precipitation_type) {
 
     let weatherData = new WeatherData(value, type, unit, time, place);
 

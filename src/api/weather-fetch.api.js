@@ -1,4 +1,6 @@
-async function fetchData() {
+import {deserializedData} from "../utils/utils.js";
+
+export async function fetchData() {
     try {
         const response = await fetch("http://localhost:8080/data");
         if (!response.ok) {
@@ -14,7 +16,7 @@ async function fetchData() {
     }
 }
 
-async function fetchDataByPlace(place) {
+export async function fetchDataByPlace(place) {
     try {
         const response = await fetch(`http://localhost:8080/data/${place}`);
         if (!response.ok) {

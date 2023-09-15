@@ -1,4 +1,6 @@
-function createWeatherPrediction(value, type, unit, time, place) {
+import {WeatherData} from "./WeatherData.js";
+
+export function WeatherPrediction(value, type, unit, time, place) {
     let weatherData = new WeatherData(value, type, unit, time, place);
 
     const matches = (data) => {

@@ -1,4 +1,6 @@
-function TemperaturePrediction(value, type, unit, time, place) {
+import {WeatherPrediction} from "./WeatherPrediction.js";
+
+export function TemperaturePrediction(value, type, unit, time, place) {
     let weatherPrediction = new WeatherPrediction(value, type, unit, time, place);
 
     const convertToF = () => {
