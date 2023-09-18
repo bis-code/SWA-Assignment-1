@@ -6,6 +6,8 @@ body, h1, h2, h3, p {
 
 body {
     font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
     background-color: #f0f0f0;
 }
 
@@ -30,6 +32,7 @@ header {
 .nav-link {
     color: #007bff;
     font-weight: bold;
+    text-decoration: none;
     transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
@@ -59,6 +62,7 @@ button {
     border: none;
     padding: 10px 20px;
     cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
 }
 
 button:hover {
@@ -96,6 +100,16 @@ footer {
     padding: 10px;
     margin-top: 10px;
     border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
+/* Background for specific sections */
+#userData {
+    background-color: #f7f7f7;
+    padding: 20px;
+}
 
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    /* Adjust styles for smaller screens */
+}

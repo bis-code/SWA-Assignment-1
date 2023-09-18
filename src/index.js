@@ -19,23 +19,40 @@ async function displayDataPerCities() {
 }
 
 function constructLatestMeasurement(city, data, cityIndex) {
-    const latestMeasurement = document.createElement('p');
-    const cityParagraph = document.createElement('p');
-    const container = document.getElementById(`latestMeasurements${cityIndex}`);
-    latestMeasurement.textContent = 'Latest measurement per city';
-    cityParagraph.textContent = city;
-    container.appendChild(latestMeasurement);
-    container.appendChild(cityParagraph);
 
-    const currentDateMinusOneDay = new Date();
-    currentDateMinusOneDay.setDate(currentDateMinusOneDay.getDate() - 1);
-    const latestMeasurementData = data.filter(measurement => isSameDay(measurement.getTime(), currentDateMinusOneDay));
+    const table = document.createElement('table');
+    table.classList.add('table');
 
-    latestMeasurementData.forEach((measurement) => {
-        const measurementParagraph = document.createElement('p');
-        measurementParagraph.textContent = measurement.toString();
-        container.appendChild(measurementParagraph);
+    const headerRow = document.createElement('tr');
+    headerRow.innerHTML = `
+        <th>Measurement Type</th>
+        <th>Value</th>
+    `;
+
+    table.appendChild(headerRow);
+
+    const measurementTypes = ['temperature', 'wind speed', 'precipitation', 'cloud coverage'];
+
+    measurementTypes.forEach((type) => {
+
+        const latestMeasurement = data.find((measurement) => measurement.getType() === type);
+
+        if (latestMeasurement) {
+            const row = document.createElement('tr');
+            const typeCell = document.createElement('td');
+            typeCell.textContent = type;
+            const valueCell = document.createElement('td');
+            const unit = latestMeasurement.getUnit();
+            valueCell.textContent = `${latestMeasurement.getValue()} ${unit}`;
+
+            row.appendChild(typeCell);
+            row.appendChild(valueCell);
+            table.appendChild(row);
+        }
     });
+
+    const container = document.getElementById(`latestMeasurements${cityIndex}`);
+    container.appendChild(table);
 }
 
 function constructMeasurementsIn24Hours(city, data, cityIndex) {
@@ -188,6 +205,7 @@ async function postDataFromUser() {
         document.getElementById('statusOutput').innerText = 'Error sending weather data: ' + error;
     }
 }
+
 function resetForm() {
     document.getElementById('userDataType').value = '';
     document.getElementById('userDataTime').value = '';
@@ -309,6 +327,8 @@ async function displayDataForWholePage() {
 }
 
 document.addEventListener('DOMContentLoaded', displayDataForWholePage);
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const submitButton = document.getElementById('submitUserForm');
 
