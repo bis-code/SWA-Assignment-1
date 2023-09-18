@@ -144,6 +144,54 @@ function constructMeasurementForMaximumTemperatureLastDay(city, data, cityIndex)
     container.appendChild(measurementsForMaximumTemperatureLastDayParagraph);
 }
 
+async function postDataFromUser() {
+    try {
+        const type = document.getElementById('userDataType').value;
+        const time = document.getElementById('userDataTime').value;
+        const place = document.getElementById('userDataPlace').value;
+        const fromValue = parseFloat(document.getElementById('userDataFrom').value);
+        const toValue = parseFloat(document.getElementById('userDataTo').value);
+        const unit = document.getElementById('userDataUnit').value;
+        const precipitationTypes = document.getElementById('userDataPrecipitationTypes').value.split(',');
+        const directions = document.getElementById('userDataDirections').value.split(',');
+
+        const endpoint = 'http://localhost:8080/POST/data';
+
+        const dataItem = {
+            type,
+            time,
+            place,
+            from: fromValue,
+            to: toValue,
+            unit,
+            precipitation_types: precipitationTypes,
+            directions,
+        };
+
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(dataItem),
+        });
+
+        if (response) { // Check if response exists
+            if (response.ok) {
+                console.log(`${type} data sent successfully.`);
+            } else {
+                console.error(`Failed to send ${type} data.`);
+            }
+        } else {
+            console.error('No response received from the server.');
+        }
+    } catch (error) {
+        console.error('Error sending weather data:', error);
+    }
+}
+
+
+
 async function displayMeasurementsForNext24Hours(cityIndex) {
     try {
         const city = cities[cityIndex - 1];
@@ -206,3 +254,21 @@ async function displayDataForWholePage() {
 }
 
 document.addEventListener('DOMContentLoaded', displayDataForWholePage);
+document.addEventListener('DOMContentLoaded', () => {
+    const submitButton = document.getElementById('submitUserForm');
+
+    submitButton.addEventListener('click', () => {
+        postDataFromUser()
+            .then(response => {
+                if (response.ok) {
+                    console.log('Data sent successfully.');
+                } else {
+                    console.error('Failed to send data.');
+                }
+            })
+            .catch(error => {
+                console.error('Error sending data:', error);
+            });
+    });
+});
+
