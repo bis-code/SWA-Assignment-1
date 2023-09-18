@@ -20,38 +20,54 @@ async function displayDataPerCities() {
 
 function constructLatestMeasurement(city, data, cityIndex) {
 
-    const table = document.createElement('table');
-    table.classList.add('table');
+    const container = document.getElementById(`latestMeasurements${cityIndex}`);
+    let table = container.querySelector('table');
 
-    const headerRow = document.createElement('tr');
-    headerRow.innerHTML = `
-        <th>Measurement Type</th>
-        <th>Value</th>
-    `;
+    if (!table) {
+        table = document.createElement('table');
+        table.classList.add('table');
 
-    table.appendChild(headerRow);
+        const caption = document.createElement('caption');
+        caption.textContent = 'Latest Measurement';
+        table.appendChild(caption); // Add the caption to the table.
+
+        const headerRow = document.createElement('tr');
+        headerRow.innerHTML = `
+            <th>Measurement Type</th>
+            <th>Value</th>
+        `;
+
+        table.appendChild(headerRow);
+    }
 
     const measurementTypes = ['temperature', 'wind speed', 'precipitation', 'cloud coverage'];
 
     measurementTypes.forEach((type) => {
-
         const latestMeasurement = data.find((measurement) => measurement.getType() === type);
 
         if (latestMeasurement) {
-            const row = document.createElement('tr');
-            const typeCell = document.createElement('td');
-            typeCell.textContent = type;
-            const valueCell = document.createElement('td');
-            const unit = latestMeasurement.getUnit();
-            valueCell.textContent = `${latestMeasurement.getValue()} ${unit}`;
+            const existingRow = table.querySelector(`tr[data-type="${type}"]`);
+            if (existingRow) {
+                const valueCell = existingRow.querySelector('td:last-child');
+                const unit = latestMeasurement.getUnit();
+                valueCell.textContent = `${latestMeasurement.getValue()} ${unit}`;
+            } else {
+                const row = document.createElement('tr');
+                row.setAttribute('data-type', type);
+                const typeCell = document.createElement('td');
+                typeCell.textContent = type;
+                const valueCell = document.createElement('td');
+                const unit = latestMeasurement.getUnit();
+                valueCell.textContent = `${latestMeasurement.getValue()} ${unit}`;
 
-            row.appendChild(typeCell);
-            row.appendChild(valueCell);
-            table.appendChild(row);
+                row.appendChild(typeCell);
+                row.appendChild(valueCell);
+                table.appendChild(row);
+            }
         }
     });
 
-    const container = document.getElementById(`latestMeasurements${cityIndex}`);
+    container.innerHTML = '';
     container.appendChild(table);
 }
 
