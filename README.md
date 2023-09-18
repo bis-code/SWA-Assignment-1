@@ -1,2 +1,2 @@
 # SWA-Assignment-1
-Made by @BaicoianuIoanSorin and @Adi-Vaitis
+Made by @BaicoianuIoanSorin, @Adi-Vaitis and @felixioan
