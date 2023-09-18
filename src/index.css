@@ -1,0 +1,101 @@
+/* Reset some default styles to ensure consistent rendering */
+body, h1, h2, h3, p {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+/* Header styles */
+header {
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Tab styles */
+.nav-tabs {
+    background-color: #f0f0f0;
+    border-bottom: 2px solid #007bff;
+}
+
+.nav-item {
+    margin-right: 10px;
+}
+
+.nav-link {
+    color: #007bff;
+    font-weight: bold;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.nav-link.active {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Tab content styles */
+.tab-content {
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+/* Paragraph styles */
+p {
+    margin-bottom: 10px;
+}
+
+/* Button styles */
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Footer styles */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+/* Container styles */
+#latestMeasurements1,
+#latestMeasurements2,
+#latestMeasurements3,
+#measurementsIn24Hours1,
+#measurementsIn24Hours2,
+#measurementsIn24Hours3,
+#measurementsForMinimumTemperatureLastDay1,
+#measurementsForMinimumTemperatureLastDay2,
+#measurementsForMinimumTemperatureLastDay3,
+#averageWindSpeedForLastDay1,
+#averageWindSpeedForLastDay2,
+#averageWindSpeedForLastDay3,
+#measurementsForTotalPrecipitationLastDay1,
+#measurementsForTotalPrecipitationLastDay2,
+#measurementsForTotalPrecipitationLastDay3,
+#measurementsForMaximumTemperatureLastDay1,
+#measurementsForMaximumTemperatureLastDay2,
+#measurementsForMaximumTemperatureLastDay3 {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+
