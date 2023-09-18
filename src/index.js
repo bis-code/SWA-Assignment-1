@@ -1,6 +1,6 @@
-import { fetchDataByPlace } from "./api/weather-fetch.api.js";
-import { fetchDataForecastByPlace } from "./api/weather-request.api.js";
-import { addHoursToDate, isDateBetween, isSameDay } from "./utils/date.utils.js";
+import {fetchDataByPlace} from "./api/weather-fetch.api.js";
+import {fetchDataForecastByPlace} from "./api/weather-request.api.js";
+import {addHoursToDate, isDateBetween, isSameDay} from "./utils/date.utils.js";
 
 const cities = ['Horsens', 'Aarhus', 'Copenhagen'];
 const currentDate = new Date();
@@ -144,6 +144,60 @@ function constructMeasurementForMaximumTemperatureLastDay(city, data, cityIndex)
     container.appendChild(measurementsForMaximumTemperatureLastDayParagraph);
 }
 
+async function postDataFromUser() {
+    const API_URI = 'http://localhost:8080/data';
+
+    try {
+        const formData = {
+            type: document.getElementById('userDataType').value,
+            time: document.getElementById('userDataTime').value,
+            place: document.getElementById('userDataPlace').value,
+            from: parseFloat(document.getElementById('userDataFrom').value),
+            to: parseFloat(document.getElementById('userDataTo').value),
+            unit: document.getElementById('userDataUnit').value,
+            precipitationTypes: document.getElementById('userDataPrecipitationTypes').value.split(','),
+            directions: document.getElementById('userDataDirections').value.split(',')
+        };
+
+        const response = await fetch(API_URI, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
+
+        console.log('Response', response);
+
+        const responseData = await response.json();
+
+        if (response.status === 201) {
+            console.log(`${formData.type} data sent successfully.`);
+            document.getElementById('statusOutput').innerText = 'Weather data successfully added!';
+            resetForm();
+        } else {
+            console.error(`Failed to send ${formData.type} data. HTTP status: ${response.status}`);
+            console.error('Response Data:', responseData);
+            document.getElementById('statusOutput').innerText = `Failed to send ${formData.type} data.`;
+        }
+    } catch (error) {
+        console.error('An error occurred:', error);
+        document.getElementById('statusOutput').innerText = 'Error sending weather data: ' + error;
+    }
+}
+function resetForm() {
+    document.getElementById('userDataType').value = '';
+    document.getElementById('userDataTime').value = '';
+    document.getElementById('userDataPlace').value = '';
+    document.getElementById('userDataFrom').value = '';
+    document.getElementById('userDataTo').value = '';
+    document.getElementById('userDataUnit').value = '';
+    document.getElementById('userDataPrecipitationTypes').value = '';
+    document.getElementById('userDataDirections').value = '';
+}
+
+
 async function displayMeasurementsForNext24Hours(cityIndex) {
     try {
         const city = cities[cityIndex - 1];
@@ -206,3 +260,15 @@ async function displayDataForWholePage() {
 }
 
 document.addEventListener('DOMContentLoaded', displayDataForWholePage);
+document.addEventListener('DOMContentLoaded', () => {
+    const submitButton = document.getElementById('submitUserForm');
+
+    submitButton.addEventListener('click', async () => {
+        try {
+            await postDataFromUser();
+            console.log('Data sent successfully.');
+        } catch (error) {
+            console.error('Error sending data:', error);
+        }
+    });
+});
