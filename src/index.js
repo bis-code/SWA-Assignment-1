@@ -4,6 +4,7 @@ import {addHoursToDate, isDateBetween, isSameDay} from "./utils/date.utils.js";
 
 const cities = ['Horsens', 'Aarhus', 'Copenhagen'];
 const currentDate = new Date();
+let userDataSent = [];
 
 async function displayDataPerCities() {
     try {
@@ -173,6 +174,7 @@ async function postDataFromUser() {
         const responseData = await response.json();
 
         if (response.status === 201) {
+            userDataSent.push(formData);
             console.log(`${formData.type} data sent successfully.`);
             document.getElementById('statusOutput').innerText = 'Weather data successfully added!';
             resetForm();
@@ -197,6 +199,53 @@ function resetForm() {
     document.getElementById('userDataDirections').value = '';
 }
 
+function renderDataSent() {
+    const dataSentContainer = document.getElementById('dataSentContainer');
+    dataSentContainer.innerHTML = '';
+
+    if (userDataSent.length === 0) {
+        dataSentContainer.textContent = 'No data sent by the user yet.';
+        return;
+    }
+
+    const table = document.createElement('table');
+    table.classList.add('table');
+    const thead = document.createElement('thead');
+    const tbody = document.createElement('tbody');
+
+    const headerRow = document.createElement('tr');
+    const headers = ['Type', 'Time', 'Place', 'From', 'To', 'Unit', 'Precipitation Types', 'Directions'];
+    headers.forEach(headerText => {
+        const th = document.createElement('th');
+        th.textContent = headerText;
+        headerRow.appendChild(th);
+    });
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    userDataSent.forEach(item => {
+        const row = document.createElement('tr');
+        const values = [
+            item.type,
+            item.time,
+            item.place,
+            item.from,
+            item.to,
+            item.unit,
+            item.precipitationTypes.join(', '),
+            item.directions.join(', ')
+        ];
+        values.forEach(valueText => {
+            const cell = document.createElement('td');
+            cell.textContent = valueText;
+            row.appendChild(cell);
+        });
+        tbody.appendChild(row);
+    });
+
+    table.appendChild(tbody);
+    dataSentContainer.appendChild(table);
+}
 
 async function displayMeasurementsForNext24Hours(cityIndex) {
     try {
@@ -272,3 +321,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+document.querySelector('#dataSent-tab').addEventListener('click', renderDataSent);
