@@ -1,36 +1,31 @@
 import {WeatherData} from "./WeatherData.js";
 
 export function Wind(value, type, unit, time, place, direction) {
+    WeatherData.call(this, value, type, unit, time, place);
+    this.direction = direction;
+}
 
-    let weatherData = new WeatherData(value, type, unit, time, place);
+Wind.prototype = Object.create(WeatherData.prototype);
+Wind.prototype.constructor = Wind;
 
-    const getDirection = function () {
-        return direction;
+Wind.prototype.getDirection = function () {
+    return this.direction;
+}
+
+Wind.prototype.setDirection = function (newDirection) {
+    this.direction = newDirection;
+}
+
+Wind.prototype.convertToMPH = function () {
+    if (this.getUnit() !== 'm/h') {
+        this.setValue(this.getValue() * 2.237);
+        this.setUnit('m/h');
     }
+}
 
-    const setDirection = function (_direction) {
-        direction = _direction;
-    }
-
-    const convertToMPH = () => {
-        if (weatherData.getUnit() !== 'm/h') {
-            weatherData.setValue(weatherData.getValue() * 2.237);
-            weatherData.setUnit('m/h');
-        }
-    }
-
-    const convertToMPS = () => {
-        if (weatherData.getUnit() !== 'm/s') {
-            weatherData.setValue(weatherData.getValue() / 2.237);
-            weatherData.setUnit('m/s');
-        }
-    }
-
-    return {
-        ...weatherData,
-        convertToMPH,
-        convertToMPS,
-        getDirection,
-        setDirection
+Wind.prototype.convertToMPS = function () {
+    if (this.getUnit() !== 'm/s') {
+        this.setValue(this.getValue() / 2.237);
+        this.setUnit('m/s');
     }
 }

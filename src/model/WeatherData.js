@@ -1,42 +1,40 @@
-import {Event} from "./Event.js";
+import { Event } from "./Event.js";
+
 export function WeatherData(value, type, unit, time, place) {
-    let event = new Event(time, place);
+    this._value = value;
+    this._type = type;
+    this._unit = unit;
 
-    const getValue = function () {
-        return value;
-    };
-
-    const getType = function () {
-        return type;
-    };
-
-    const getUnit = function () {
-        return unit;
-    };
-
-    const setValue = function (_value) {
-        value = _value;
-    }
-
-    const setType = function (_type) {
-        type = _type;
-    }
-
-    const setUnit = function (_unit) {
-        unit = _unit;
-    }
-
-    const toString = () => `${type} ${value} ${unit}`;
-
-    return {
-        ...event,
-        getValue,
-        setValue,
-        getType,
-        setType,
-        getUnit,
-        setUnit,
-        toString
-    };
-
+    Event.call(this, time, place);
 }
+
+WeatherData.prototype = Object.create(Event.prototype);
+WeatherData.prototype.constructor = Event;
+
+WeatherData.prototype.getValue = function() {
+    return this._value;
+};
+
+WeatherData.prototype.getType = function() {
+    return this._type;
+};
+
+WeatherData.prototype.getUnit = function() {
+    return this._unit;
+};
+
+WeatherData.prototype.setValue = function(newValue) {
+    this._value = newValue;
+};
+
+WeatherData.prototype.setType = function(newType) {
+    this._type = newType;
+};
+
+WeatherData.prototype.setUnit = function(newUnit) {
+    this._unit = newUnit;
+};
+
+WeatherData.prototype.toString = function() {
+    return `${this._type} ${this._value} ${this._unit}`;
+};

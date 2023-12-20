@@ -1,9 +1,8 @@
-import {WeatherData} from "./WeatherData.js";
+import { WeatherData } from "./WeatherData.js";
 
 export function CloudCoverage(value, type, unit, time, place) {
-    let weatherData = new WeatherData(value, type, unit, time, place);
-
-    return {
-        ...weatherData
-    };
+    WeatherData.call(this, value, type, unit, time, place);
 }
+
+CloudCoverage.prototype = Object.create(WeatherData.prototype);
+CloudCoverage.prototype.constructor = CloudCoverage;

@@ -1,24 +1,19 @@
 export function Event(time, place) {
-    const getTime = () => {
-        return time;
-    };
+    this.time = time;
+    this.place = place;
+}
 
-    const getPlace = () => {
-        return place;
-    };
+Event.prototype.constructor = Event;
 
-    const setTime = (_time) => {
-        time = _time;
-    };
-
-    const setPlace = (_place) => {
-        place = _place;
-    };
-
-    return {
-        getTime,
-        setTime,
-        getPlace,
-        setPlace
-    }
+Event.prototype.getTime = function () {
+    return this.time;
+}
+Event.prototype.setTime = function (newTime) {
+    this.time = newTime;
+}
+Event.prototype.getPlace = function () {
+    return this.place;
+}
+Event.prototype.setPlace = function (newPlace) {
+    this.place = newPlace;
 }

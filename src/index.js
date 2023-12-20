@@ -1,6 +1,10 @@
 import {fetchDataByPlace} from "./api/weather-fetch.api.js";
 import {fetchDataForecastByPlace} from "./api/weather-request.api.js";
-import {addHoursToDate, isDateBetween, isSameDay} from "./utils/date.utils.js";
+import {addHoursToDate, isDateBetween, dateIsLastDayFromCurrentDay, isSameDay} from "./utils/date.utils.js";
+import {Temperature} from "./model/Temperature.js";
+import {WeatherPrediction} from "./model/WeatherPrediction.js";
+import {Wind} from "./model/Wind.js";
+import {Precipitation} from "./model/Precipitation.js";
 
 const cities = ['Horsens', 'Aarhus', 'Copenhagen'];
 const currentDate = new Date();
@@ -29,7 +33,7 @@ function constructLatestMeasurement(city, data, cityIndex) {
 
         const caption = document.createElement('caption');
         caption.textContent = 'Latest Measurement';
-        table.appendChild(caption); // Add the caption to the table.
+        table.appendChild(caption);
 
         const headerRow = document.createElement('tr');
         headerRow.innerHTML = `
@@ -81,11 +85,17 @@ function constructMeasurementsIn24Hours(city, data, cityIndex) {
     container.appendChild(cityParagraph);
 
     const dateIn24Hours = addHoursToDate(currentDate, 24);
-    const measurementsIn24Hours = data.filter(measurement => isDateBetween(measurement.getTime(), currentDate, dateIn24Hours));
+    const measurementsIn24Hours = data.filter(measurement => {
+        if (measurement instanceof WeatherPrediction) {
+            return isDateBetween(measurement.getTime(), currentDate, dateIn24Hours);
+        }
+    });
     measurementsIn24Hours.forEach(measurement => {
-        const measurementParagraph = document.createElement('p');
-        measurementParagraph.textContent = measurement.toString();
-        container.appendChild(measurementParagraph);
+        if (measurement instanceof WeatherPrediction) {
+            const measurementParagraph = document.createElement('p');
+            measurementParagraph.textContent = measurement.toString();
+            container.appendChild(measurementParagraph);
+        }
     });
 }
 
@@ -95,67 +105,86 @@ function constructMeasurementForMinimumTemperatureLastDay(city, data, cityIndex)
     const container = document.getElementById(`measurementsForMinimumTemperatureLastDay${cityIndex}`);
     cityParagraph.textContent = city;
     container.appendChild(cityParagraph);
-    const lastDay = new Date();
-    lastDay.setDate(lastDay.getDate() - 1);
-    const measurementsForMinimumTemperatureLastDay = data.filter(measurement => {
-        const isLastDay = isSameDay(measurement.getTime(), lastDay);
-        const isTemperature = measurement.getType() === "temperature";
-        return isLastDay && isTemperature;
-    }).map(measurement => {
-        measurement.convertToC();
-        return measurement.getValue();
-    });
-    const minimumUnitOfMeasurementsForLastDay = Math.min(...measurementsForMinimumTemperatureLastDay);
-    measurementsForMinimumTemperatureLastDayParagraph.textContent = "Measurements for the minimum temperature in the last day " + minimumUnitOfMeasurementsForLastDay + "C";
+
+    const measurementsForMinimumTemperatureLastDay = data
+        .filter(measurement => {
+            if (measurement instanceof Temperature) {
+                const isLastDay = dateIsLastDayFromCurrentDay(measurement.getTime());
+                const isTemperature = measurement.getType() === "temperature";
+                return isLastDay && isTemperature;
+            }
+            return false;
+        })
+        .map(measurement => {
+            measurement.convertToC();
+            return measurement.getValue();
+        });
+
+    if (measurementsForMinimumTemperatureLastDay.length > 0) {
+        const minimumUnitOfMeasurementsForLastDay = Math.min(...measurementsForMinimumTemperatureLastDay);
+        measurementsForMinimumTemperatureLastDayParagraph.textContent = "Measurements for the minimum temperature on the last day: " + minimumUnitOfMeasurementsForLastDay + "C";
+    } else {
+        measurementsForMinimumTemperatureLastDayParagraph.textContent = "No temperature measurements found for the last day.";
+    }
+
     container.appendChild(measurementsForMinimumTemperatureLastDayParagraph);
 }
 
 function constructMeasurementForTotalPrecipitationLastDay(city, data, cityIndex) {
-    const measurementForTotalPrecipitationLastDay = document.createElement('p');
+    const measurementsForTotalPrecipitationLastDayParagraph = document.createElement('p');
     const cityParagraph = document.createElement('p');
     const container = document.getElementById(`measurementsForTotalPrecipitationLastDay${cityIndex}`);
     cityParagraph.textContent = city;
     container.appendChild(cityParagraph);
 
-    const lastDay = new Date();
-    lastDay.setDate(lastDay.getDate() - 1);
     let totalPrecipitationLastDay = 0;
-    data.forEach(measurement => {
-        const isLastDay = isSameDay(measurement.getTime(), lastDay);
-        const isPrecipitation = measurement.getType() === "precipitation";
-
-        if (isLastDay && isPrecipitation) {
+    const measurementsForTotalPrecipitationLastDay = data.filter(measurement => {
+        if (measurement instanceof Precipitation) {
+            const isLastDay = dateIsLastDayFromCurrentDay(measurement.getTime());
+            const isPrecipitation = measurement.getType() === "precipitation";
+            return isLastDay && isPrecipitation;
+        }
+        return false;
+    })
+        .map(measurement => {
             measurement.convertToMM();
             totalPrecipitationLastDay += measurement.getValue();
-        }
-    });
+        });
 
-    measurementForTotalPrecipitationLastDay.textContent = "Measurements for total precipitation in the last day " + Number(totalPrecipitationLastDay).toFixed(2) + "mm";
-    container.appendChild(measurementForTotalPrecipitationLastDay);
+    if (measurementsForTotalPrecipitationLastDay.length > 0) {
+        measurementsForTotalPrecipitationLastDayParagraph.textContent = "Measurements for total precipitation in the last day " + Number(totalPrecipitationLastDay).toFixed(2) + "mm";
+    } else {
+        measurementsForTotalPrecipitationLastDayParagraph.textContent = "No precipitation measurements found for the last day";
+    }
+    container.appendChild(measurementsForTotalPrecipitationLastDayParagraph);
 }
 
 function constructAverageWindSpeedForLastDay(city, data, cityIndex) {
-    const averageWindSpeedForLastDayParagraph = document.createElement('p');
+    const measurementsAverageWindSpeedForLastDayParagraph = document.createElement('p');
     const cityParagraph = document.createElement('p');
     const container = document.getElementById(`averageWindSpeedForLastDay${cityIndex}`);
     cityParagraph.textContent = city;
     container.appendChild(cityParagraph);
-    const lastDay = new Date();
-    lastDay.setDate(lastDay.getDate() - 1);
-    let totalWindSpeed = 0;
-    let totalLengthOfWindMeasurements = 0;
-    data.forEach(measurement => {
-        const isLastDay = isSameDay(measurement.getTime(), lastDay);
-        const isWind = measurement.getType() === "wind speed";
 
-        if (isLastDay && isWind) {
+    let totalWindSpeed = 0;
+    const measurementsAverageWindSpeedForLastDay = data.filter(measurement => {
+        if (measurement instanceof Wind) {
+            const isLastDay = dateIsLastDayFromCurrentDay(measurement.getTime());
+            const isWind = measurement.getType() === "wind speed";
+            return isLastDay && isWind;
+        }
+        return false;
+    })
+        .map(measurement => {
             measurement.convertToMPH();
             totalWindSpeed += measurement.getValue();
-            totalLengthOfWindMeasurements++;
-        }
-    });
-    averageWindSpeedForLastDayParagraph.textContent = "Average wind speed for the last day " + Number(totalWindSpeed / totalLengthOfWindMeasurements).toFixed(2) + " MPH";
-    container.appendChild(averageWindSpeedForLastDayParagraph);
+        });
+    if (measurementsAverageWindSpeedForLastDay.length > 0) {
+        measurementsAverageWindSpeedForLastDayParagraph.textContent = "Average wind speed for the last day " + Number(totalWindSpeed / measurementsAverageWindSpeedForLastDay.length).toFixed(2) + " MPH";
+    } else {
+        measurementsAverageWindSpeedForLastDay.textContent = "No wind speed measurements for the last day";
+    }
+    container.appendChild(measurementsAverageWindSpeedForLastDayParagraph);
 }
 
 function constructMeasurementForMaximumTemperatureLastDay(city, data, cityIndex) {
@@ -164,17 +193,25 @@ function constructMeasurementForMaximumTemperatureLastDay(city, data, cityIndex)
     const container = document.getElementById(`measurementsForMaximumTemperatureLastDay${cityIndex}`);
     cityParagraph.textContent = city;
     container.appendChild(cityParagraph);
-    const lastDay = new Date();
-    lastDay.setDate(lastDay.getDate() - 1);
+
     const measurementsForMaximumTemperatureLastDay = data.filter(measurement => {
-        const isLastDay = isSameDay(measurement.getTime(), lastDay);
-        const isTemperature = measurement.getType() === "temperature";
-        return isLastDay && isTemperature;
+        if (measurement instanceof Temperature) {
+            const isLastDay = dateIsLastDayFromCurrentDay(measurement.getTime());
+            const isTemperature = measurement.getType() === "temperature";
+            return isLastDay && isTemperature;
+        }
+        return false;
     }).map(measurement => {
         return measurement.getValue();
     });
-    const maximumUnitOfMeasurementsForLastDay = Math.max(...measurementsForMaximumTemperatureLastDay);
-    measurementsForMaximumTemperatureLastDayParagraph.textContent = "Measurements for the maximum temperature in the last day " + maximumUnitOfMeasurementsForLastDay;
+
+    if (measurementsForMaximumTemperatureLastDay.length > 0) {
+        const maximumUnitOfMeasurementsForLastDay = Math.max(...measurementsForMaximumTemperatureLastDay);
+        measurementsForMaximumTemperatureLastDayParagraph.textContent = "Measurements for the maximum temperature in the last day " + maximumUnitOfMeasurementsForLastDay + "C";
+    }
+    else {
+        measurementsForMaximumTemperatureLastDayParagraph.textContent = "No temperature measurements found for the last day.";
+    }
     container.appendChild(measurementsForMaximumTemperatureLastDayParagraph);
 }
 

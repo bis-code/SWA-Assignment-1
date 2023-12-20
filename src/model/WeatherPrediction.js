@@ -1,43 +1,45 @@
-import { WeatherData } from "./WeatherData.js";
 import { Event } from "./Event.js";
 
 export function WeatherPrediction(from, to, type, unit, time, place) {
-    let event = new Event(time, place);
+   Event.call(this, time, place);
 
-    const getFrom = () => {
-        return from;
-    };
-
-    const getTo = () => {
-        return to;
-    };
-
-    const setFrom = function (_from) {
-        from = _from;
-    }
-
-    const setTo = function (_to) {
-        to = _to;
-    }
-
-    const getType = function () {
-        return type;
-    };
-
-    const getUnit = function () {
-        return unit;
-    };
-
-    const toString = () => `${type} between ${to}${unit} and ${from}${unit} at ${time}`;
-
-    return {
-        ...event,
-        getFrom,
-        getTo,
-        getType,
-        getUnit,
-        setFrom,
-        setTo,
-        toString,
-    };
+    this.from = from;
+    this.to = to;
+    this.type = type;
+    this.unit = unit;
 }
+
+WeatherPrediction.prototype = Object.create(Event.prototype);
+WeatherPrediction.prototype.constructor = WeatherPrediction;
+
+WeatherPrediction.prototype.getFrom = function() {
+    return this.from;
+};
+
+WeatherPrediction.prototype.getTo = function() {
+    return this.to;
+};
+
+WeatherPrediction.prototype.setFrom = function(newFrom) {
+    this.from = newFrom;
+};
+
+WeatherPrediction.prototype.setTo = function(newTo) {
+    this.to = newTo;
+};
+
+WeatherPrediction.prototype.setUnit = function(newUnit) {
+    this.unit = newUnit;
+};
+
+WeatherPrediction.prototype.getType = function() {
+    return this.type;
+};
+
+WeatherPrediction.prototype.getUnit = function() {
+    return this.unit;
+};
+
+WeatherPrediction.prototype.toString = function() {
+    return `${this.type} between ${this.from}${this.unit} and ${this.to}${this.unit} at ${this.time}`;
+};

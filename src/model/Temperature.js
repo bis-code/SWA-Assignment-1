@@ -1,25 +1,22 @@
-import {WeatherData} from "./WeatherData.js";
+import { WeatherData } from "./WeatherData.js";
 
 export function Temperature(value, type, unit, time, place) {
-    let weatherData = new WeatherData(value, type, unit, time, place);
-
-    const convertToF = () => {
-        if (weatherData.getUnit() !== 'F') {
-            weatherData.setValue((weatherData.getValue() * 9 / 5) + 32);
-            weatherData.setUnit('F');
-        }
-    }
-
-    const convertToC = () => {
-        if (weatherData.getUnit() !== 'C') {
-            weatherData.setValue((weatherData.getValue() - 32) * 5 / 9);
-            weatherData.setUnit('C');
-        }
-    }
-
-    return {
-        ...weatherData,
-        convertToF,
-        convertToC,
-    }
+    WeatherData.call(this, value, type, unit, time, place);
 }
+
+Temperature.prototype = Object.create(WeatherData.prototype);
+Temperature.prototype.constructor = Temperature;
+
+Temperature.prototype.convertToF = function() {
+    if (this.getUnit() !== 'F') {
+        this.setValue((this.getValue() * 9 / 5) + 32);
+        this.setUnit('F');
+    }
+};
+
+Temperature.prototype.convertToC = function() {
+    if (this.getUnit() !== 'C') {
+        this.setValue((this.getValue() - 32) * 5 / 9);
+        this.setUnit('C');
+    }
+};
