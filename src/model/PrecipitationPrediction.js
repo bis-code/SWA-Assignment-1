@@ -1,5 +1,39 @@
 import { WeatherPrediction } from "./WeatherPrediction.js";
 
+// TODO using concatenative inheritance
+// function createPrecipitationPrediction(from, to, type, unit, time, place, precipitationType) {
+//     const weatherPrediction = new WeatherPrediction(from, to, type, unit, time, place);
+//
+//     function getPrecipitationType() {
+//         return precipitationType;
+//     }
+//
+//     function convertToInches() {
+//         if (weatherPrediction.getUnit() !== 'in') {
+//             weatherPrediction.setFrom(weatherPrediction.getFrom() / 25.4);
+//             weatherPrediction.setTo(weatherPrediction.getTo() / 25.4);
+//             weatherPrediction.setUnit('in');
+//         }
+//     }
+//
+//     function convertToMM() {
+//         if (weatherPrediction.getUnit() !== 'mm') {
+//             weatherPrediction.setFrom(weatherPrediction.getFrom() * 25.4);
+//             weatherPrediction.setTo(weatherPrediction.getTo() * 25.4);
+//             weatherPrediction.setUnit('mm');
+//         }
+//     }
+//
+//     return Object.assign({}, weatherPrediction, {
+//         getPrecipitationType,
+//         convertToInches,
+//         convertToMM,
+//     });
+// }
+//
+// export { createPrecipitationPrediction };
+
+// TODO using prototype inheritance
 export function PrecipitationPrediction(from, to, type, unit, time, place, precipitationType) {
     WeatherPrediction.call(this, from, to, type, unit, time, place);
     this.precipitationType = precipitationType;
