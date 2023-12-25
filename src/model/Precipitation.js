@@ -65,6 +65,32 @@ import {WeatherData} from "./WeatherData.js";
 //     }
 // };
 
+// example of using class
+// export class Precipitation extends WeatherData {
+//     constructor(value, type, unit, time, place, precipitation_type) {
+//         super(value, type, unit, time, place);
+//         this.precipitation_type = precipitation_type;
+//     }
+//
+//     getPrecipitationType() {
+//         return this.precipitation_type;
+//     }
+//
+//     convertToInches() {
+//         if (this.getUnit() !== 'in') {
+//             this.setValue(this.getValue() / 25.4);
+//             this.setUnit('in');
+//         }
+//     }
+//
+//     convertToMM() {
+//         if (this.getUnit() !== 'mm') {
+//             this.setValue(this.getValue() * 25.4);
+//             this.setUnit('mm');
+//         }
+//     }
+// }
+
 
 export function Precipitation(value, type, unit, time, place, precipitation_type) {
     WeatherData.call(this, value, type, unit, time, place);
