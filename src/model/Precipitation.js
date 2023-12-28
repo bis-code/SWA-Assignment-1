@@ -31,40 +31,6 @@ import {WeatherData} from "./WeatherData.js";
 //     return precipitationObject;
 // }
 
-// This follows constructor function
-// binding with this
-// export function Precipitation(value, type, unit, time, place, precipitation_type) {
-//     WeatherData.call(this, value, type, unit, time, place);
-//     this.precipitation_type = precipitation_type;
-//
-//     this.getPrecipitationType = this.getPrecipitationType.bind(this);
-//     this.convertToInches = this.convertToInches.bind(this);
-//     this.convertToMM = this.convertToMM.bind(this);
-// }
-//
-// // prototype chain setup
-// Precipitation.prototype = Object.create(WeatherData.prototype);
-// Precipitation.prototype.constructor = Precipitation;
-//
-// // ensures that all instances of Precipitation.prototype have access to these methods
-// Precipitation.prototype.getPrecipitationType = function () {
-//     return this.precipitation_type;
-// };
-//
-// Precipitation.prototype.convertToInches = function () {
-//     if (this.getUnit() !== 'in') {
-//         this.setValue(this.getValue() / 25.4);
-//         this.setUnit('in');
-//     }
-// };
-//
-// Precipitation.prototype.convertToMM = function () {
-//     if (this.getUnit() !== 'mm') {
-//         this.setValue(this.getValue() * 25.4);
-//         this.setUnit('mm');
-//     }
-// };
-
 // example of using class
 // export class Precipitation extends WeatherData {
 //     constructor(value, type, unit, time, place, precipitation_type) {
@@ -91,7 +57,7 @@ import {WeatherData} from "./WeatherData.js";
 //     }
 // }
 
-
+// this follows constructor function
 export function Precipitation(value, type, unit, time, place, precipitation_type) {
     WeatherData.call(this, value, type, unit, time, place);
     this.precipitation_type = precipitation_type;
