@@ -3,6 +3,7 @@ import { WeatherPrediction } from "./WeatherPrediction.js";
 // TODO using concatenative inheritance
 // function createPrecipitationPrediction(from, to, type, unit, time, place, precipitationType) {
 //     const weatherPrediction = new WeatherPrediction(from, to, type, unit, time, place);
+//     const anotherObject = {};
 //
 //     function getPrecipitationType() {
 //         return precipitationType;

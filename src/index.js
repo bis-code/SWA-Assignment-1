@@ -321,7 +321,17 @@ function renderDataSent() {
 async function displayMeasurementsForNext24Hours(cityIndex) {
     try {
         const city = cities[cityIndex - 1];
+        // example of using with await
         const data = await fetchDataForecastByPlace(city);
+        // example of using the then and catch
+        // const data = fetchDataForecastByPlace(city)
+        //     .then((responsePromise) => {
+        //         return responsePromise;
+        //     })
+        //     .catch((error) => {
+        //         console.error(error);
+        //     });
+
         constructMeasurementsIn24Hours(city, data, cityIndex);
     } catch (error) {
         console.error(error);
