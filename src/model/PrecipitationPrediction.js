@@ -64,6 +64,21 @@ PrecipitationPrediction.prototype.convertToInches = function() {
     }
 };
 
+// Control "this" using bind
+
+// PrecipitationPrediction.prototype.convertToInches = function() {
+//     var boundFunction = function() {
+//         if (this.getUnit() !== 'in') {
+//             this.setFrom(this.getFrom() / 25.4);
+//             this.setTo(this.getTo() / 25.4);
+//             this.setUnit('in');
+//         }
+//     }.bind(this);
+//
+//     boundFunction();
+// };
+
+
 PrecipitationPrediction.prototype.convertToMM = function() {
     if (this.getUnit() !== 'mm') {
         this.setFrom(this.getFrom() * 25.4);
